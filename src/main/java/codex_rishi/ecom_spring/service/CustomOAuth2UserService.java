@@ -5,7 +5,10 @@ import codex_rishi.ecom_spring.model.Role;
 import codex_rishi.ecom_spring.model.User;
 import codex_rishi.ecom_spring.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.*;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
@@ -40,13 +43,24 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                     .role(role)
                     .build();
         } else {
-            user.setName(name); // update info
+            user.setName(name);
             user.setImageUrl(picture);
-            user.setRole(role); // update role based on email
+            user.setRole(role);
         }
 
         userRepository.save(user);
 
-        return oAuth2User;
+        // ⭐ Add Spring Security authorities
+        Collection<GrantedAuthority> authorities = List.of(
+                new SimpleGrantedAuthority("ROLE_" + role.name())
+        );
+
+        // ⭐ Return an OAuth2User WITH authorities
+        return new DefaultOAuth2User(
+                authorities,
+                oAuth2User.getAttributes(),
+                "email"
+        );
     }
+
 }

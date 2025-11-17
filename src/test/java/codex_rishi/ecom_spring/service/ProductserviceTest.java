@@ -28,7 +28,7 @@ public class ProductserviceTest {
     private Product product;
 
     // Convert LocalDate → Date
-    LocalDate localDate = LocalDate.of(2020, 6, 21);
+    LocalDate localDate = LocalDate.of(2024, 6, 21);
     Date releaseDate = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
     @BeforeEach
@@ -83,7 +83,7 @@ public class ProductserviceTest {
      {
 //         when(productRepository.newarrival(9,2025)).thenReturn(Optional.of(product));
           productService.newarrival();
-          verify(productRepository,times(1)).newarrival(10,2025);
+          verify(productRepository,times(1)).newarrival(any(Date.class));
      }
 
      @Test
@@ -99,12 +99,24 @@ public class ProductserviceTest {
     void updateProductTest() throws IOException {
         Product existingProduct = new Product();
         existingProduct.setId(2);
-        existingProduct.setName("Old Laptop");
+        existingProduct.setName("New Laptop");
         existingProduct.setBrand("Dell");
+        existingProduct.setPrice(BigDecimal.valueOf(5000.256));
+        existingProduct.setDescription("bhaloi besh");
+        existingProduct.setQuantity(25);
+        existingProduct.setCategory("Laptop");
+        existingProduct.setReleaseDate(releaseDate);
+
 
         Product updatedProduct = new Product();
-        updatedProduct.setName("Laptop Pro");
-        updatedProduct.setBrand("HP");
+        updatedProduct.setId(2);
+        updatedProduct.setName("Superbb");
+        updatedProduct.setBrand("hp");
+        updatedProduct.setPrice(BigDecimal.valueOf(50550.256));
+        updatedProduct.setDescription("bhaloi ");
+        updatedProduct.setQuantity(24);
+        updatedProduct.setCategory("Computer");
+        updatedProduct.setReleaseDate(releaseDate);
 
         MultipartFile mockImage = new MockMultipartFile("file", "new.jpg", "image/jpeg", "fake".getBytes());
 
@@ -114,8 +126,8 @@ public class ProductserviceTest {
         Product result = productService.updateproduct(2, updatedProduct, mockImage);
 
         assertNotNull(result);
-        assertEquals("Laptop Pro", result.getName());
-        assertEquals("HP", result.getBrand());
+        assertEquals("Superbb", result.getName());
+        assertEquals("hp", result.getBrand());
         assertEquals("new.jpg", result.getImage());
     }
 
@@ -129,6 +141,7 @@ public class ProductserviceTest {
         newproduct.setBrand("Dell");
         newproduct.setPrice(BigDecimal.valueOf(5000.256));
         newproduct.setDescription("bhaloi besh");
+        newproduct.setQuantity(25);
         newproduct.setCategory("Laptop");
         newproduct.setReleaseDate(releaseDate);
 

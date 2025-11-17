@@ -11,7 +11,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,7 +19,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -28,59 +26,61 @@ class CartServiceTest {
 
     @Mock
     CartItemRepository cartItemRepository;
+
     @InjectMocks
     CartService cartService;
 
-    Product product = new Product(
-            54,
-            "sh",
-            new BigDecimal("554.25"),
-            "dn",
-            "dd",
-            "ss",
-            new SimpleDateFormat("yyyy").parse("2025"),
-            33,
-            "ss",
-            "dd",
-            new byte[] {1,2,3}
-    );
-
+    Product product;
+    User user;
     CartItem cartItem;
-    User user=new User(1l,"gmail","Rishi","jpg", Role.ADMIN);
 
-    CartServiceTest() throws ParseException {
-    }
+    CartServiceTest() throws ParseException {}
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws ParseException {
         MockitoAnnotations.openMocks(this);
-        cartItem =new CartItem();
-        cartItem.setId(15l);
+
+        product = new Product(
+                54,
+                "sh",
+                new BigDecimal("554.25"),
+                "dn",
+                "dd",
+                "ss",
+                new SimpleDateFormat("yyyy").parse("2025"),
+                33,
+                "ss",
+                "dd",
+                new byte[]{1, 2, 3}
+        );
+
+        user = new User(1L, "gmail", "Rishi", "jpg", Role.ADMIN);
+
+        cartItem = new CartItem();
+        cartItem.setId(15L);
         cartItem.setUser(user);
+        cartItem.setProduct(product);
+        cartItem.setQuantity(10);
         cartItem.setAddedAt(LocalDateTime.now());
-        cartItem.setQuantity(50);
-        }
+    }
+
+    // ---------------------- ADD TO CART TESTS ----------------------
 
     @Test
     void addToCart_createsNewItem() {
-        // Arrange
         when(cartItemRepository.findByUserAndProduct(user, product)).thenReturn(Optional.empty());
 
-        // Act
         cartService.addToCart(user, product, 5);
 
-        // Assert
-        // Verify save() was called once (for new item)
-        verify(cartItemRepository, times(1)).save(argThat(cartItem ->
-                cartItem.getUser().equals(user) &&
-                        cartItem.getProduct().equals(product) &&
-                        cartItem.getQuantity() == 5
+        verify(cartItemRepository, times(1)).save(argThat(item ->
+                item.getUser().equals(user) &&
+                        item.getProduct().equals(product) &&
+                        item.getQuantity() == 5
         ));
     }
 
     @Test
     void addToCart_updatesExistingItem() {
-        // Arrange
         CartItem existing = new CartItem();
         existing.setUser(user);
         existing.setProduct(product);
@@ -89,39 +89,82 @@ class CartServiceTest {
         when(cartItemRepository.findByUserAndProduct(user, product))
                 .thenReturn(Optional.of(existing));
 
-        // Act
-        cartService.addToCart(user, product, 5); // Add more items
+        cartService.addToCart(user, product, 5);
 
-        // Assert
-        // Verify save() was called with updated quantity (10 + 5 = 15)
-        verify(cartItemRepository, times(1)).save(argThat(cartItem ->
-                cartItem.getQuantity() == 15 &&
-                        cartItem.getUser().equals(user) &&
-                        cartItem.getProduct().equals(product)
+        verify(cartItemRepository, times(1)).save(argThat(item ->
+                item.getQuantity() == 15 &&
+                        item.getUser().equals(user) &&
+                        item.getProduct().equals(product)
         ));
     }
 
     @Test
-    void getCartItemsByUser() {
-        when(cartItemRepository.findAllByUser_Id(1l)).thenReturn(List.of(cartItem));
-
-        // Act (call the real service method)
-        List<CartItem> result = cartService.getCartItemsByUser(user);
-         //Assert
-        assertNotNull(cartItem);
-        assertEquals(1, result.size());
-        assertEquals(15L, result.get(0).getId());
-        assertEquals(user.getId(), result.get(0).getUser().getId());
-
-        verify(cartItemRepository, times(1)).findAllByUser_Id(1L);
-
+    void addToCart_quantityZero_throwsException() {
+        assertThrows(IllegalArgumentException.class,
+                () -> cartService.addToCart(user, product, 0));
     }
 
     @Test
-    public void removeFromCart()
-    {
-        cartService.removeFromCart(15l,18l);
-        verify(cartItemRepository,times(1)).deleteByProduct_IdAndUser_Id(18l,15l);
+    void addToCart_negativeQuantity_throwsException() {
+        assertThrows(IllegalArgumentException.class,
+                () -> cartService.addToCart(user, product, -5));
+    }
 
+    @Test
+    void addToCart_quantityExceedsStock_throwsException() {
+        assertThrows(IllegalArgumentException.class,
+                () -> cartService.addToCart(user, product, 50)); // stock = 33
+    }
+
+    @Test
+    void addToCart_existingItemExceedsStock_throwsException() {
+        CartItem existing = new CartItem();
+        existing.setUser(user);
+        existing.setProduct(product);
+        existing.setQuantity(30);
+
+        when(cartItemRepository.findByUserAndProduct(user, product))
+                .thenReturn(Optional.of(existing));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> cartService.addToCart(user, product, 10)); // 30 + 10 = 40 > 33 stock
+    }
+
+    @Test
+    void addToCart_nullUser_throwsException() {
+        assertThrows(IllegalArgumentException.class,
+                () -> cartService.addToCart(null, product, 5));
+    }
+
+    @Test
+    void addToCart_nullProduct_throwsException() {
+        assertThrows(IllegalArgumentException.class,
+                () -> cartService.addToCart(user, null, 5));
+    }
+
+    // ---------------------- GET CART ITEMS TEST ----------------------
+
+    @Test
+    void getCartItemsByUser_returnsCorrectItems() {
+        when(cartItemRepository.findAllByUser_Id(1L)).thenReturn(List.of(cartItem));
+
+        List<CartItem> result = cartService.getCartItemsByUser(user);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals(15L, result.get(0).getId());
+        assertEquals(1L, result.get(0).getUser().getId());
+
+        verify(cartItemRepository, times(1)).findAllByUser_Id(1L);
+    }
+
+    // ---------------------- REMOVE TEST ----------------------
+
+    @Test
+    void removeFromCart_deletesCorrectItem() {
+        cartService.removeFromCart(1L, 54L);
+
+        verify(cartItemRepository, times(1))
+                .deleteByProduct_IdAndUser_Id(54L, 1L);
     }
 }

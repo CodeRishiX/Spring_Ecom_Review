@@ -23,13 +23,13 @@ public class Productcontroller {
     @Autowired
     private Productservice service;
 
-@GetMapping("/products")                    // PUBLIC   -->> Home page
+@GetMapping("/products")
     public List<Product> getallproducts()
     {
         return service.getallproducts();
     }
 
-    @GetMapping("/productdetails/{id}")       // PUBLIC  --> Product details page
+    @GetMapping("/productdetails/{id}")
     public Product getProduct(@PathVariable int id)
     {
        return service.getProductByID(id);
@@ -87,7 +87,7 @@ public class Productcontroller {
     }
 
 
-    @DeleteMapping("/product/{id}")      // protect it admin
+    @DeleteMapping("/product/{id}")
     public ResponseEntity<String> deleteproduct(@PathVariable int id) {
         Product product = service.getProductByID(id);
         if (product != null) {
@@ -108,11 +108,17 @@ public class Productcontroller {
     }
 
 
-    @GetMapping("/New-Arrival")            // PUBLIC
-    public List<Product> newarrival()
-    {
-        return service.newarrival();
+    @GetMapping("/New-Arrival")
+    public List<Product> newarrival(@RequestParam(value = "new", required = false) Boolean onlyNew) {
+        if (Boolean.TRUE.equals(onlyNew)) {
+            logger.info("Returning NEW arrivals only");
+            return service.newarrival(); // ✅ now returns filtered results
+        } else {
+            logger.info("Returning all products for /New-Arrival (no new=true param)");
+            return service.getallproducts();
+        }
     }
+
 
 
 

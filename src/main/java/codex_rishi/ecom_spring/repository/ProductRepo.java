@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -18,7 +19,9 @@ public interface ProductRepo extends JpaRepository<Product, Integer> {
     List<Product> searchproducts(String keyword);
 
 
-    @Query("SELECT p FROM Product p WHERE MONTH(p.releaseDate) = :month AND YEAR(p.releaseDate) = :year ORDER BY p.releaseDate DESC")
-    List<Product> newarrival(@Param("month") int month, @Param("year") int year);
+    @Query("SELECT p FROM Product p WHERE p.releaseDate >= :fromDate ORDER BY p.releaseDate DESC")
+    List<Product> newarrival(@Param("fromDate") Date fromDate);
+
+
 
 }

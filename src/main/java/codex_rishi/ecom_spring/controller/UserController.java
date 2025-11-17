@@ -32,6 +32,6 @@ public class UserController {
             return ResponseEntity.status(404).body("User not found");
         }
 
-        return ResponseEntity.ok("ROLE_" + user.getRole().name());  // e.g., ROLE_ADMIN or ROLE_USER
+        return ResponseEntity.ok("ROLE_" + user.getRole().name());
     }
 }

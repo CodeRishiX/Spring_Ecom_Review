@@ -1,0 +1,151 @@
+<!-- WHY CHOOSE US SECTION FRAGMENT - Can be included optionally on any page -->
+<div class="why-choose-section" th:fragment="whyChooseUs">
+    <div class="container">
+        <div class="row justify-content-between align-items-center">
+            <div class="col-lg-6">
+                <h2 class="section-title">Why Choose Us</h2>
+                <p>We provide the best products from around the world. Quality, affordability, and service you can trust.</p>
+
+                <div class="row my-5">
+                    <div class="col-6 col-md-6">
+                        <div class="feature">
+                            <div class="icon"><i class="bi bi-truck"></i></div>
+                            <h3>Fast &amp; Free Shipping</h3>
+                            <p>Reliable and fast delivery, always free.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-6">
+                        <div class="feature">
+                            <div class="icon"><i class="bi bi-bag-check"></i></div>
+                            <h3>Easy to Shop</h3>
+                            <p>A seamless and enjoyable shopping experience.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-6">
+                        <div class="feature">
+                            <div class="icon"><i class="bi bi-headset"></i></div>
+                            <h3>24/7 Support</h3>
+                            <p>We're here to help, anytime you need us.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-6">
+                        <div class="feature">
+                            <div class="icon"><i class="bi bi-arrow-return-left"></i></div>
+                            <h3>Hassle Free Returns</h3>
+                            <p>Not quite right? No problem. We make returns easy.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="img-wrap">
+                    <img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=1000&q=80"
+                         alt="Why Choose Us" class="img-fluid rounded-3 shadow-lg" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER FRAGMENT - Main footer with newsletter, links, and copyright -->
+<footer class="footer-section" th:fragment="footer">
+    <div class="container position-relative">
+        <!-- Decorative image -->
+        <div class="sofa-img">
+            <img src="https://placehold.co/400x380/3b5d50/ffffff?text=SpringCart&font=inter" alt="Decorative" class="img-fluid" />
+        </div>
+
+        <!-- Newsletter subscription -->
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="subscription-form">
+                    <h3 class="d-flex align-items-center mb-3">
+                        <i class="bi bi-envelope-paper me-2" style="font-size: 1.5rem;"></i>
+                        <span>Subscribe to Newsletter</span>
+                    </h3>
+                    <form action="#" class="row g-3">
+                        <div class="col-auto">
+                            <input type="text" class="form-control" placeholder="Enter your name" />
+                        </div>
+                        <div class="col-auto">
+                            <input type="email" class="form-control" placeholder="Enter your email" />
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-secondary"><i class="bi bi-send"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer links and info -->
+        <div class="row g-5 mb-5">
+            <div class="col-lg-4">
+                <div class="mb-4 footer-logo-wrap">
+                    <a href="#" class="footer-logo">SpringCart<span>.</span></a>
+                </div>
+                <p class="mb-4">Your one-stop shop for all things trendy and essential. We bring you the best products at unbeatable prices.</p>
+                <p>Contact: debangshubhattacharya4@gmail.com</p>
+                <ul class="list-unstyled custom-social d-flex gap-3">
+                    <li><a href="#"><i class="bi bi-facebook"></i></a></li>
+                    <li><a href="#"><i class="bi bi-twitter"></i></a></li>
+                    <li><a href="#"><i class="bi bi-instagram"></i></a></li>
+                    <li><a href="#"><i class="bi bi-linkedin"></i></a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="row links-wrap">
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a th:href="@{/about}">About us</a></li>
+                            <li><a href="#">Services</a></li>
+                            <li><a href="#">Blog</a></li>
+                            <li><a href="#">Contact us</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a href="#">Support</a></li>
+                            <li><a href="#">Knowledge base</a></li>
+                            <li><a href="#">Live chat</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a href="#">Jobs</a></li>
+                            <li><a href="#">Our team</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a th:href="@{/}">All Products</a></li>
+                            <li><a th:href="@{/new-arrivals}">New Arrivals</a></li>
+                            <li><a href="#">Popular Items</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Copyright -->
+        <div class="copyright">
+            <div class="row pt-4">
+                <div class="col-lg-6">
+                    <p class="mb-2 text-center text-lg-start">&copy; SpringCart 2025. All rights reserved.</p>
+                </div>
+                <div class="col-lg-6 text-center text-lg-end">
+                    <ul class="list-unstyled d-inline-flex ms-auto">
+                        <li class="me-4"><a href="#">Terms &amp; Conditions</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>

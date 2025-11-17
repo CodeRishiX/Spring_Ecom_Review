@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -7,13 +7,14 @@
     <meta name="author" content="" />
     <title>Update Product - Start Bootstrap</title>
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <link rel="icon" type="image/x-icon" th:href="@{/assets/online-shopping.png}" />
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <!-- Custom CSS -->
-    <link href="css/styles.css" rel="stylesheet" />
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
+
     <!-- Inline CSS for modern styling -->
     <style>
         body {
@@ -27,18 +28,8 @@
             50% {background-position: 100% 50%;}
             100% {background-position: 0% 50%;}
         }
-        .navbar, .footer-modern {
-            background: linear-gradient(to right, #1a1a1a, #2c3e50) !important;
-            color: #fff;
-        }
-        .navbar .nav-link, .navbar .navbar-brand, .navbar .btn {
-            color: #fff !important;
-        }
-        .navbar .nav-link.active, .navbar .nav-link:focus, .navbar .nav-link:hover {
-            color: #ffd700 !important;
-        }
         .header {
-            background: linear-gradient(120deg, #2c3e50 0%, #1a1a1a 100%);
+            background:  linear-gradient(90deg, #466a5d 0%, #3c5d51 100%);
             color: #fff;
             border-radius: 0 0 30px 30px;
             box-shadow: 0 8px 32px rgba(44,62,80,0.15);
@@ -89,69 +80,13 @@
             border-radius: 8px;
             margin-bottom: 1rem;
         }
-        /* Footer Modern Styles */
-        .footer-modern {
-            background: #1a1a1a;
-            color: #fff;
-            padding: 3rem 0;
-            position: relative;
-            overflow: hidden;
-        }
-        .footer-modern h5, .footer-modern h6 {
-            font-weight: 600;
-        }
-        .footer-modern p {
-            margin-bottom: 1rem;
-            color: rgba(255,255,255,0.7);
-        }
-        .footer-modern a {
-            color: #ffd700;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        .footer-modern a:hover {
-            color: #fff;
-        }
-        .footer-modern .list-unstyled {
-            padding-left: 0;
-            list-style: none;
-        }
-        .footer-modern hr {
-            background: rgba(255,255,255,0.2);
-            border: none;
-            height: 1px;
-            margin: 1.5rem 0;
-        }
     </style>
 </head>
 <body>
-<!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-light" style="background: linear-gradient(to right, #1a1a1a, #2c3e50); color: #fff;">
-    <div class="container px-4 px-lg-5">
-        <a class="navbar-brand fw-bold" style="color:#fff;" href="index.html">Flipkart</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                <li class="nav-item"><a class="nav-link" style="color:#fff;" href="index.html">Home</a></li>
-                <li class="nav-item"><a class="nav-link" style="color:#fff;" href="About.html">About</a></li>
-                <li class="nav-item"><a class="nav-link" style="color:#fff;" href="New-Arrivals.html">New Arrivals</a></li>
-                <li class="nav-item"><a class="nav-link active" style="color:#ffd700;" href="add-product.html">Add Product</a></li>
-            </ul>
-            <form class="d-flex me-2">
-                <button class="btn btn-outline-dark" type="button">
-                    <i class="bi-cart-fill me-1"></i>
-                    Cart
-                    <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                </button>
-            </form>
-            <a href="https://springcart.onrender.com/oauth2/authorization/google" class="btn btn-gradient-signin ms-2 d-flex align-items-center" style="padding: 0.5rem 1.2rem; font-weight: 600; border-radius: 2rem; background: linear-gradient(90deg, #ff9800 0%, #ff5722 100%); color: #fff; box-shadow: 0 2px 8px rgba(255,152,0,0.15); border: none; transition: background 0.3s, box-shadow 0.3s;">
-                <i class="bi bi-box-arrow-in-right me-2"></i> Sign In
-            </a>
-        </div>
-    </div>
-</nav>
+
+<!-- NAVBAR FRAGMENT - Reusable navigation bar from fragments folder -->
+<div th:replace="fragments/navbar :: navbar"></div>
+
 <!-- Header -->
 <header class="header py-5">
     <div class="container px-4 px-lg-5 my-5">
@@ -217,46 +152,22 @@
         </div>
     </div>
 </section>
-<!-- Footer Modern -->
-<footer class="footer-modern">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 mb-3 mb-md-0">
-                <h5>About Flipkart</h5>
-                <p class="mb-1">Your one-stop shop for all things trendy and essential. We bring you the best products at unbeatable prices.</p>
-            </div>
-            <div class="col-md-3 mb-2 mb-md-0">
-                <h6>Quick Links</h6>
-                <ul class="list-unstyled">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="New-Arrivals.html">New Arrivals</a></li>
-                    <li><a href="About.html">About</a></li>
-                    <li><a href="add-product.html">Add Product</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </div>
-            <div class="col-md-3">
-                <h6>Contact</h6>
-                <p class="mb-1">Email: support@flipkart.com</p>
-                <p>Phone: +91 12345 67890</p>
-            </div>
-        </div>
-        <hr style="background:rgba(255,255,255,0.2);">
-        <p class="m-0 text-center">© Flipkart 2025. All rights reserved.</p>
-    </div>
-</footer>
+
+<!-- FOOTER FRAGMENT - Reusable footer from fragments folder -->
+<div th:replace="fragments/footer :: footer"></div>
+
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Core theme JS -->
-<script src="js/scripts.js"></script>
-<!-- Form Submission Script -->
+<script th:src="@{/js/scripts.js}"></script>
+
+<!-- Form Submission Script and Role button visibility (unchanged, as in your original) -->
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // ✅ Role-based Update Product form visibility
-        fetch('https://springcart.onrender.com/api/user/role', { credentials: 'include' })
+        fetch('http://localhost:8080/api/user/role', { credentials: 'include' })
             .then(res => {
                 if (!res.ok) throw new Error('Unauthorized');
-                return res.text(); // ✅ Expect plain text, not JSON
+                return res.text();
             })
             .then(role => {
                 if (role !== 'ROLE_ADMIN') {
@@ -267,13 +178,11 @@
                 document.querySelector('.card').style.display = 'none';
             });
 
-        // ✅ Extract product ID from URL
         const urlParams = new URLSearchParams(window.location.search);
         const productId = urlParams.get('id');
 
         if (productId) {
-            // ✅ Fetch product details
-            fetch(`https://springcart.onrender.com/api/productdetails/${productId}`)
+            fetch(`http://localhost:8080/api/productdetails/${productId}`)
                 .then(res => res.json())
                 .then(product => {
                     document.getElementById('brand').value = product.brand || '';
@@ -284,7 +193,7 @@
                     document.getElementById('quantity').value = product.quantity || 0;
                     document.getElementById('releaseDate').value = product.releaseDate ? new Date(product.releaseDate).toISOString().split('T')[0] : '';
                     document.getElementById('available').checked = product.available !== false;
-                    document.getElementById('currentImage').src = `https://springcart.onrender.com/api/product/${productId}/image`;
+                    document.getElementById('currentImage').src = `http://localhost:8080/api/product/${productId}/image`;
                     document.getElementById('currentImage').onerror = function () {
                         this.src = 'https://dummyimage.com/200x200/dee2e6/6c757d.jpg';
                     };
@@ -294,7 +203,6 @@
                     document.querySelector('.card').innerHTML = '<p class="text-center">Failed to load product details.</p>';
                 });
 
-            // ✅ Submit Update Form
             document.getElementById('updateProductForm').addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const fd = new FormData();
@@ -316,7 +224,7 @@
                 }
 
                 try {
-                    const res = await fetch(`https://springcart.onrender.com/api/productupdate/${productId}`, {
+                    const res = await fetch(`http://localhost:8080/api/productupdate/${productId}`, {
                         method: 'PUT',
                         body: fd,
                         credentials: 'include'
@@ -326,7 +234,7 @@
                         throw new Error(errorText);
                     }
                     alert('✅ Product updated successfully!');
-                    window.location.href = 'index.html';
+                    window.location.href = '/';
                 } catch (err) {
                     console.error('Update error:', err.message);
                     alert('❌ Error: ' + err.message);
@@ -337,11 +245,47 @@
         }
     });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const signInButton = document.getElementById('signInButton');
+        const userProfile = document.getElementById('userProfile');
+        const userImage = document.getElementById('userImage');
+        const userName = document.getElementById('userName');
+        const adminBadge = document.getElementById('adminBadge');
 
-<!-- Admin Role Button Visibility Script -->
+        fetch('http://localhost:8080/api/auth/status', { credentials: 'include' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.authenticated) {
+                    signInButton.classList.add('d-none');
+                    userProfile.classList.remove('d-none');
+                    userImage.src = data.imageUrl || 'https://via.placeholder.com/40';
+                    userName.textContent = data.name;
+
+                    fetch('http://localhost:8080/api/user/role', {
+                        credentials: 'include',
+                        headers: { "Accept": "text/plain" }
+                    })
+                        .then(res => res.text())
+                        .then(role => {
+                            if (role === "ROLE_ADMIN") {
+                                adminBadge.classList.remove('d-none');
+                                document.getElementById('userBadge').classList.add('d-none');
+                            }
+                        });
+                } else {
+                    signInButton.classList.remove('d-none');
+                    userProfile.classList.add('d-none');
+                }
+            })
+            .catch(error => console.error('Auth check failed:', error));
+    });
+</script>
+
+
 <script>
     window.addEventListener("DOMContentLoaded", () => {
-        fetch("https://springcart.onrender.com/api/user/role", { credentials: "include" })
+        fetch("http://localhost:8080/api/user/role", { credentials: "include" })
             .then(res => res.text())
             .then(role => {
                 const isAdmin = role === "ROLE_ADMIN";

@@ -26,34 +26,48 @@ public class CartService {
     @Autowired
     private UserRepository userRepository;
 
-    // ✅ Add product to cart
     public void addToCart(User user, Product product, int quantity) {
-        // Check if the cart item already exists
+
+        if (user == null || product == null) {
+            throw new IllegalArgumentException("❌ Invalid user or product.");
+        }
+
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("❌ Quantity must be at least 1.");
+        }
+
+        if (quantity > product.getQuantity()) {
+            throw new IllegalArgumentException("❌ Not enough stock available.");
+        }
+
         Optional<CartItem> existingCartItem = cartItemRepository.findByUserAndProduct(user, product);
 
         if (existingCartItem.isPresent()) {
-            // Update the quantity if the item already exists
             CartItem cartItem = existingCartItem.get();
-            cartItem.setQuantity(cartItem.getQuantity() + quantity);
+            int newQty = cartItem.getQuantity() + quantity;
+
+            if (newQty > product.getQuantity()) {
+                throw new IllegalArgumentException("❌ Quantity exceeds available stock.");
+            }
+
+            cartItem.setQuantity(newQty);
             cartItem.setAddedAt(java.time.LocalDateTime.now());
             cartItemRepository.save(cartItem);
-        } else {
-            // Create a new cart item if it doesn't exist
+        }
+        else {
             CartItem cartItem = new CartItem();
             cartItem.setUser(user);
             cartItem.setProduct(product);
             cartItem.setQuantity(quantity);
-            cartItem.setAddedAt(java.time.LocalDateTime.now()); // Add timestamp
+            cartItem.setAddedAt(java.time.LocalDateTime.now());
             cartItemRepository.save(cartItem);
         }
     }
 
-    // ✅ Get all cart items for the logged-in user
     public List<CartItem> getCartItemsByUser(User user) {
         return cartItemRepository.findAllByUser_Id(user.getId());
     }
 
-    // ✅ Remove item from user's cart
     @Transactional
     public void removeFromCart(Long userId, Long productId) {
         cartItemRepository.deleteByProduct_IdAndUser_Id(productId, userId);

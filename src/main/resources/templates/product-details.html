@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Product Details - SpringCart</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" th:href="@{/assets/online-shopping.png}" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <style>
+        /* Product Details Specific Styles */
+        .product-details-container {
+            padding: 4rem 0;
+            min-height: calc(100vh - 200px);
+        }
+
+        .product-image-section {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .product-image-section img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            object-fit: contain;
+            aspect-ratio: 1 / 1;
+        }
+
+        .product-info-section {
+            padding: 0 2rem;
+        }
+
+        .product-name {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .product-rating i {
+            color: var(--secondary-color);
+            font-size: 1rem;
+        }
+
+        .product-price-section {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .price-display {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .current-price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .old-price {
+            font-size: 1.3rem;
+            color: var(--text-light);
+            text-decoration: line-through;
+        }
+
+        .discount-badge {
+            background: #ff4757;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+
+        .product-meta {
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            font-size: 0.95rem;
+        }
+
+        .meta-item strong {
+            color: var(--text-dark);
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .product-description {
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            border: 2px solid var(--bg-light);
+            border-radius: 8px;
+            overflow: hidden;
+            width: fit-content;
+        }
+
+        .quantity-controls button {
+            background: transparent;
+            border: none;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            color: var(--text-dark);
+            font-size: 1.2rem;
+            transition: background 0.3s;
+        }
+
+        .quantity-controls button:hover {
+            background: var(--bg-light);
+        }
+
+        .quantity-controls input {
+            width: 60px;
+            border: none;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-add-cart {
+            flex: 1;
+            min-width: 200px;
+            background: var(--primary-color);
+            border: none;
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-add-cart:hover {
+            background: #324f46;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(59, 93, 80, 0.3);
+        }
+
+        .btn-wishlist {
+            background: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-wishlist:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .features-section {
+            background: var(--bg-light);
+            padding: 2rem;
+            border-radius: 10px;
+            margin-top: 3rem;
+        }
+
+        .features-section h4 {
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+        }
+
+        .features-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .features-list li {
+            padding: 0.75rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-light);
+        }
+
+        .features-list i {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .admin-controls {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid var(--bg-light);
+        }
+
+        .btn-edit, .btn-delete {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .btn-edit {
+            background: var(--secondary-color);
+            color: var(--text-dark);
+        }
+
+        .btn-edit:hover {
+            background: #f8b810;
+        }
+
+        .btn-delete {
+            background: #ff4757;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #ee2d37;
+        }
+
+        .loading-skeleton {
+            background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .error-message {
+            background: #ffe5e5;
+            color: #ff4757;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .product-name {
+                font-size: 1.8rem;
+            }
+
+            .current-price {
+                font-size: 1.5rem;
+            }
+
+            .product-info-section {
+                padding: 0;
+                margin-top: 2rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn-add-cart {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR FRAGMENT -->
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<!-- MAIN PRODUCT DETAILS SECTION -->
+<main class="product-details-container">
+    <div class="container">
+        <div id="loading-spinner" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-3 text-muted">Loading product details...</p>
+        </div>
+
+        <div id="error-container" class="d-none"></div>
+
+        <div id="product-content" class="d-none">
+            <!-- Breadcrumb Navigation -->
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/}" style="text-decoration: none;">Home</a></li>
+                    <li class="breadcrumb-item"><a th:href="@{/}" style="text-decoration: none;">Shop</a></li>
+                    <li class="breadcrumb-item active" id="breadcrumb-name">Product</li>
+                </ol>
+            </nav>
+
+            <!-- Product Details Grid -->
+            <div class="row g-4">
+                <!-- Product Image -->
+                <div class="col-lg-5">
+                    <div class="product-image-section">
+                        <img id="productImage"  alt="Product Image" />
+                    </div>
+                </div>
+
+                <!-- Product Information -->
+                <div class="col-lg-7">
+                    <div class="product-info-section">
+                        <!-- Product Name -->
+                        <h1 class="product-name" id="productName">Loading...</h1>
+
+                        <!-- Rating -->
+                        <div class="product-rating">
+                            <div>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-half"></i>
+                            </div>
+                            <span>(256 reviews)</span>
+                        </div>
+
+                        <!-- Price Section -->
+                        <div class="product-price-section">
+                            <div class="price-display">
+                                <span class="current-price" id="productPrice">$0.00</span>
+                                <span class="old-price" id="oldPrice">$0.00</span>
+                            </div>
+                            <span class="discount-badge">Save 20%</span>
+                        </div>
+
+                        <!-- Product Meta Info -->
+                        <div class="product-meta">
+                            <div class="meta-item">
+                                <strong>SKU</strong>
+                                <span id="sku">PROD-001</span>
+                            </div>
+                            <div class="meta-item">
+                                <strong>Brand</strong>
+                                <span id="brandName">Premium Brand</span>
+                            </div>
+                            <div class="meta-item">
+                                <strong>Availability</strong>
+                                <span style="color: #2ed573; font-weight: 600;"><i class="bi bi-check-circle-fill"></i> In Stock</span>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <p class="product-description" id="productDescription">
+                            Loading product description...
+                        </p>
+
+                        <!-- Quantity Selector -->
+                        <div class="quantity-selector">
+                            <label for="inputQuantity" style="font-weight: 600; color: var(--text-dark);">Quantity:</label>
+                            <div class="quantity-controls">
+                                <button type="button" id="decreaseQty" aria-label="Decrease quantity">−</button>
+                                <input type="number" id="inputQuantity" value="1" min="1" max="100" readonly />
+                                <button type="button" id="increaseQty" aria-label="Increase quantity">+</button>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="action-buttons">
+                            <button class="btn-add-cart" id="addToCartBtn">
+                                <i class="bi bi-cart-plus"></i>
+                                Add to Cart
+                            </button>
+                            <button class="btn-wishlist">
+                                <i class="bi bi-heart"></i>
+                                Add to Wishlist
+                            </button>
+                        </div>
+
+                        <!-- Admin Controls -->
+                        <div id="adminControls" class="admin-controls d-none">
+                            <button class="btn-edit" id="updateButton" onclick="goToUpdate()">
+                                <i class="bi bi-pencil"></i> Edit Product
+                            </button>
+                            <button class="btn-delete" id="deleteButton">
+                                <i class="bi bi-trash"></i> Delete Product
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Section -->
+            <div class="features-section">
+                <h4><i class="bi bi-check2-all"></i> Why Choose This Product?</h4>
+                <ul class="features-list">
+                    <li><i class="bi bi-check-circle-fill"></i> Premium Quality Materials</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Fast & Free Shipping</li>
+                    <li><i class="bi bi-check-circle-fill"></i> 30-Day Money Back Guarantee</li>
+                    <li><i class="bi bi-check-circle-fill"></i> 24/7 Customer Support</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- FOOTER FRAGMENT -->
+<div th:replace="fragments/footer :: footer"></div>
+
+<!-- Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom App JS -->
+<script th:src="@{/js/app.js}" defer></script>
+
+<!-- Product Details JS -->
+<script th:src="@{/js/product-details.js}" defer></script>
+
+</body>
+
+
+</html>
