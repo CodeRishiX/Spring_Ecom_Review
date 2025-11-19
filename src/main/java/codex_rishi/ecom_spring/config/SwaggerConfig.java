@@ -6,14 +6,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class swaggerconfig {
+public class SwaggerConfig {
     @Bean
-    public OpenAPI mycustomconfig() {
+    public OpenAPI myCustomConfig() {
         return new OpenAPI().info(
-                new Info().title("E-commerce application")
+                new Info()
+                        .title("E-commerce application")
                         .description("By Rishi (API documentation for E-Commerce backend)")
-
         );
     }
 }
-//http://localhost:8080/swagger-ui/index.html
