@@ -5,6 +5,7 @@ import codex_rishi.ecom_spring.service.Productservice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +24,12 @@ public class Productcontroller {
     @Autowired
     private Productservice service;
 
-@GetMapping("/products")
-    public List<Product> getallproducts()
-    {
-        return service.getallproducts();
+    @GetMapping("/products")
+    public Page<Product> getAllProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "6") int size
+    ) {
+        return service.getAllProducts(page, size);
     }
 
     @GetMapping("/productdetails/{id}")
@@ -34,9 +37,6 @@ public class Productcontroller {
     {
        return service.getProductByID(id);
     }
-
-
-
 
     @PostMapping("/addproduct")         // protect it admin
     public ResponseEntity<?> addproduct(@RequestPart Product product,
@@ -109,15 +109,22 @@ public class Productcontroller {
 
 
     @GetMapping("/New-Arrival")
-    public List<Product> newarrival(@RequestParam(value = "new", required = false) Boolean onlyNew) {
+    public Object newarrival(
+            @RequestParam(value = "new", required = false) Boolean onlyNew,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "9") int size) {
+
         if (Boolean.TRUE.equals(onlyNew)) {
-            logger.info("Returning NEW arrivals only");
-            return service.newarrival(); // ✅ now returns filtered results
+            // Return only new arrival list
+            return service.newarrival();
         } else {
-            logger.info("Returning all products for /New-Arrival (no new=true param)");
-            return service.getallproducts();
+            // Return paginated products
+            return service.getAllProducts(page, size);
         }
     }
+
+
+
 
 
 

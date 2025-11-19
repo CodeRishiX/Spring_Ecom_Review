@@ -4,6 +4,9 @@ import codex_rishi.ecom_spring.model.Product;
 import codex_rishi.ecom_spring.repository.CartItemRepository;
 import codex_rishi.ecom_spring.repository.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,10 +26,11 @@ public class Productservice {
     @Autowired
     private CartItemRepository cartItemRepository;
 
-    public List<Product> getallproducts() {
-        return repo.findAll();
-
+    public Page<Product> getAllProducts(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return repo.findAll(pageable);
     }
+
 
     public Product getProductByID(int id) {
         return repo.findById(id).get();
@@ -85,10 +89,22 @@ public class Productservice {
                     "❌ Invalid quantity. You cannot produce " + quantity + " units.");
         }
         Date cutoff = new GregorianCalendar(2024, Calendar.JANUARY, 1).getTime();
+        Date now = new Date();
 
-        if (product.getReleaseDate() == null || product.getReleaseDate().before(cutoff)) {
-            throw new IllegalArgumentException("❌ Release date must be in or after 2024.");
+        Calendar maxFuture = Calendar.getInstance();
+        maxFuture.add(Calendar.YEAR, 2);
+        Date maxAllowed = maxFuture.getTime();
+
+        Date release = product.getReleaseDate();
+
+        if (release == null || release.before(cutoff)) {
+            throw new IllegalArgumentException("❌ Release date must be on or after January 2024.");
         }
+
+        if (release.after(maxAllowed)) {
+            throw new IllegalArgumentException("❌ Release date cannot be more than 2 years in the future.");
+        }
+
 
         String type = imagefile.getContentType();
         if (!type.equals("image/jpeg") &&
@@ -184,12 +200,6 @@ public class Productservice {
 
         return repo.save(existingProduct);
     }
-
-
-
-
-
-
     public void deleteproduct(int id) {
         cartItemRepository.deleteByProduct_Id((long) id);
         repo.deleteById(id);
@@ -204,7 +214,6 @@ public class Productservice {
         Date fromDate = Date.from(sevenDaysAgo.atStartOfDay(ZoneId.systemDefault()).toInstant());
         return repo.newarrival(fromDate);
     }
-
 }
 
 

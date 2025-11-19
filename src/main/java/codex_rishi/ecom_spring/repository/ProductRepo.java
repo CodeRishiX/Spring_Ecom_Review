@@ -21,7 +21,4 @@ public interface ProductRepo extends JpaRepository<Product, Integer> {
 
     @Query("SELECT p FROM Product p WHERE p.releaseDate >= :fromDate ORDER BY p.releaseDate DESC")
     List<Product> newarrival(@Param("fromDate") Date fromDate);
-
-
-
 }

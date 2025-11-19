@@ -357,17 +357,43 @@
         carouselWrapper.addEventListener('mouseleave', startAutoPlay);
     }
 </script>
-
 <!-- Products Section -->
 <section class="product-section py-5" id="products">
     <div class="container px-4 px-lg-5 mt-5">
-        <h2 class="section-title text-center fw-bolder mb-5" id="productsTitle">Our Products</h2>
-        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center product-grid" id="productGrid">
-            <!-- Dynamic products will be inserted here by app.js -->
+
+        <h2 class="section-title text-center fw-bolder mb-5" id="productsTitle">
+            Our Products
+        </h2>
+<!--        &lt;!&ndash; SKELETON CARDS: Add this above productGrid or inside it if preferred &ndash;&gt;-->
+<!--        <div id="productSkeletons">-->
+<!--            <div class="col" style="margin-bottom:40px;" >-->
+<!--                <div class="card product-card">-->
+<!--                    <div class="loading-skeleton" style="height:200px; border-radius:8px;"></div>-->
+<!--                    <div class="card-body">-->
+<!--                        <div class="loading-skeleton" style="height:24px; width:70%; margin-bottom:10px;"></div>-->
+<!--                        <div class="loading-skeleton" style="height:18px; width:40%;"></div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            &lt;!&ndash; Repeat above block 8 times (or as many skeleton cards as grid columns) &ndash;&gt;-->
+<!--        </div>-->
+
+
+        <!-- PRODUCT GRID -->
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4
+                    justify-content-center product-grid"
+             id="productGrid">
+            <!-- JS inserts products here -->
         </div>
+
+        <!-- PAGINATION (must be OUTSIDE the row) -->
+        <div class="d-flex justify-content-center mt-4">
+            <nav>
+                <ul id="pagination" class="pagination"></ul>
+            </nav>
+        </div>.,,,
     </div>
 </section>
-
 <!-- Why Choose Us Section -->
 <div class="why-choose-section">
     <div class="container">
