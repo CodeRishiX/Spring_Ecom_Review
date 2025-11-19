@@ -3,20 +3,16 @@
 // ============================
 const API_BASE = window.location.origin + "/api";
 
-// Get product id from ?id=7
+// Get product id from ?id=7 or from /product/12 path
 function getProductId() {
     const params = new URLSearchParams(window.location.search);
     let id = params.get("id");
-
-    // If no ?id=7, then get last segment of path → /product/12
     if (!id) {
         const parts = window.location.pathname.split("/");
         id = parts[parts.length - 1];
     }
-
     return id;
 }
-
 
 // Toast Notification
 function showSnackbar(msg, isError = false) {
@@ -29,25 +25,34 @@ function showSnackbar(msg, isError = false) {
 }
 
 // ============================
-// LOAD PRODUCT DETAILS
+// LOAD PRODUCT DETAILS with Skeleton
 // ============================
 document.addEventListener("DOMContentLoaded", async () => {
     const productId = getProductId();
     const spinner = document.getElementById("loading-spinner");
+    const skeleton = document.getElementById("product-skeleton");
     const content = document.getElementById("product-content");
 
+    // Initial state: Show skeleton, hide everything else
+    spinner.classList.add("d-none");
+    skeleton.classList.remove("d-none");
+    content.classList.add("d-none");
+
     if (!productId) {
+        skeleton.classList.add("d-none");
         spinner.classList.add("d-none");
+        content.classList.add("d-none");
         showSnackbar("❌ No product ID found", true);
         return;
     }
 
     try {
+        // Fetch product details
         const res = await fetch(`${API_BASE}/productdetails/${productId}`, { credentials: "include" });
         if (!res.ok) throw new Error("Failed to load product");
-
         const p = await res.json();
 
+        // Populate product detail fields
         document.getElementById("productName").textContent = p.name;
         document.getElementById("productPrice").textContent = `$${p.price.toFixed(2)}`;
         document.getElementById("oldPrice").textContent = `$${(p.price * 1.2).toFixed(2)}`;
@@ -64,12 +69,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             window.location.href = `/update-product?id=${p.id}`;
         };
 
-
-        spinner.classList.add("d-none");
+        // Hide skeleton and show loaded content
+        skeleton.classList.add("d-none");
         content.classList.remove("d-none");
-
     } catch (err) {
+        skeleton.classList.add("d-none");
         spinner.classList.add("d-none");
+        content.classList.add("d-none");
         showSnackbar("❌ " + err.message, true);
     }
 });
@@ -81,22 +87,16 @@ document.getElementById("addToCartBtn")?.addEventListener("click", async () => {
     try {
         const auth = await fetch(`${API_BASE}/auth/status`, { credentials: "include" }).then(r => r.json());
         if (!auth.authenticated) return (window.location.href = "/oauth2/authorization/google");
-
         const productId = getProductId();
         const qty = parseInt(document.getElementById("inputQuantity").value || "1");
-
         const res = await fetch(`${API_BASE}/cart/add?productId=${productId}&quantity=${qty}`, {
             method: "POST",
             credentials: "include"
         });
-
         if (!res.ok) throw new Error(await res.text());
-
         const item = await res.json();
         showSnackbar(`🛒 Added ${item.product.name} × ${item.quantity} to cart`);
-
         updateCartBadge();
-
     } catch (err) {
         console.error(err);
         showSnackbar("❌ " + err.message, true);
@@ -116,24 +116,20 @@ async function updateCartBadge() {
 // ============================
 document.getElementById("deleteButton")?.addEventListener("click", async () => {
     if (!confirm("Delete this product?")) return;
-
     const productId = getProductId();
-
     try {
         const res = await fetch(`${API_BASE}/product/${productId}`, {
             method: "DELETE",
             credentials: "include"
         });
-
         if (!res.ok) throw new Error("Delete failed");
-
         showSnackbar("✅ Product deleted");
         setTimeout(() => (window.location.href = "/"), 1200);
-
     } catch (err) {
         showSnackbar("❌ " + err.message, true);
     }
 });
+
 // ============================
 // QUANTITY CONTROL (+ / -)
 // ============================
@@ -141,20 +137,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const qtyInput = document.getElementById("inputQuantity");
     const btnPlus = document.getElementById("increaseQty");
     const btnMinus = document.getElementById("decreaseQty");
-
     if (!qtyInput || !btnPlus || !btnMinus) return;
-
     btnPlus.addEventListener("click", () => {
         let value = parseInt(qtyInput.value, 10) || 1;
         if (value < 100) qtyInput.value = value + 1;
     });
-
     btnMinus.addEventListener("click", () => {
         let value = parseInt(qtyInput.value, 10) || 1;
         if (value > 1) qtyInput.value = value - 1;
     });
 });
-
 
 // ============================
 // CHECK ADMIN ROLE
