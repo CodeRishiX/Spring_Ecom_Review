@@ -3,7 +3,6 @@ package codex_rishi.ecom_spring.controller;
 import codex_rishi.ecom_spring.model.CartItem;
 import codex_rishi.ecom_spring.model.User;
 import codex_rishi.ecom_spring.repository.UserRepository;
-import codex_rishi.ecom_spring.service.CartService;
 import codex_rishi.ecom_spring.service.OrderDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
