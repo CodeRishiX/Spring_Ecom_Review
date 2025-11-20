@@ -203,7 +203,7 @@
                 <td>${INR(tot)}</td>
             </tr>`;
         });
-        let d=59, p=12, disc=subtotal>50000?500:0, grand=subtotal+d+p-disc;
+        let d=59, p=12, disc=subtotal>5000?500:0, grand=subtotal+d+p-disc;
         document.getElementById('summary-subtotal').textContent=INR(subtotal);
         document.getElementById('summary-delivery').textContent=INR(d);
         document.getElementById('summary-platform').textContent=INR(p);

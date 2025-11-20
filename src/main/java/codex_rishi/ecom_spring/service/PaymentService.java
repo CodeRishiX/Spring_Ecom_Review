@@ -53,55 +53,74 @@ public class PaymentService {
     }
 
     // ================================================================
-    // STEP 3 — CREATE RAZORPAY ORDER
-    // ================================================================
+// STEP 3 — CREATE RAZORPAY ORDER (Correct Grand Total Calculation)
+// ================================================================
     public Map<String, Object> createRazorpayOrder(Map<String, Object> data) {
 
         try {
+            // 1️⃣ Extract userId
             Long userId = Long.valueOf(data.get("userId").toString());
 
             User user = userRepository.findById(userId)
                     .orElseThrow(() -> new RuntimeException("User not found"));
 
+            // 2️⃣ Fetch cart items
             List<CartItem> cartItems = cartItemRepository.findAllByUser_Id(userId);
             if (cartItems.isEmpty()) {
                 throw new RuntimeException("Cart is empty");
             }
 
-            BigDecimal total = BigDecimal.ZERO;
+            // 3️⃣ Calculate subtotal
+            BigDecimal subtotal = BigDecimal.ZERO;
 
             for (CartItem item : cartItems) {
                 BigDecimal price = item.getProduct().getPrice();
                 BigDecimal qty = BigDecimal.valueOf(item.getQuantity());
-                total = total.add(price.multiply(qty));
+                subtotal = subtotal.add(price.multiply(qty));
             }
 
-            int razorpayAmount = total.multiply(BigDecimal.valueOf(100)).intValue();
+            // 4️⃣ Use SAME calculation logic as frontend
+            BigDecimal deliveryFee = BigDecimal.valueOf(59);
+            BigDecimal platformFee = BigDecimal.valueOf(12);
 
-            // Create internal order
-            codex_rishi.ecom_spring.model.Order order = codex_rishi.ecom_spring.model.Order.builder()
-                    .user(user)
-                    .totalAmount(total)
-                    .status(OrderStatus.PENDING)
-                    .createdAt(LocalDateTime.now())
-                    .build();
+            BigDecimal discount = subtotal.compareTo(BigDecimal.valueOf(5000)) > 0
+                    ? BigDecimal.valueOf(500)
+                    : BigDecimal.ZERO;
+
+            // 5️⃣ Backend GRAND TOTAL (must match frontend)
+            BigDecimal grandTotal = subtotal
+                    .add(deliveryFee)
+                    .add(platformFee)
+                    .subtract(discount);
+
+            // Razorpay expects paisa
+            int razorpayAmount = grandTotal.multiply(BigDecimal.valueOf(100)).intValue();
+
+            // 6️⃣ Create internal order
+            codex_rishi.ecom_spring.model.Order order =
+                    codex_rishi.ecom_spring.model.Order.builder()
+                            .user(user)
+                            .totalAmount(grandTotal)   // ✔ Save final total
+                            .status(OrderStatus.PENDING)
+                            .createdAt(LocalDateTime.now())
+                            .build();
 
             order = orderRepository.save(order);
 
-            // Razorpay order options
+            // 7️⃣ Razorpay options
             JSONObject options = new JSONObject();
             options.put("amount", razorpayAmount);
             options.put("currency", "INR");
             options.put("receipt", "order_rcpt_" + order.getId());
 
-            // Create Razorpay order
+            // 8️⃣ Create Razorpay order
             Order razorpayOrder = razorpayClient.orders.create(options);
 
-            // Save razorpay order id in DB
+            // 9️⃣ Save Razorpay Order ID into internal order
             order.setRazorpayOrderId(razorpayOrder.get("id"));
             orderRepository.save(order);
 
-            // Response to frontend
+            // 🔟 Prepare response for frontend
             Map<String, Object> response = new HashMap<>();
             response.put("razorpayOrderId", razorpayOrder.get("id"));
             response.put("amount", razorpayAmount);
@@ -109,18 +128,14 @@ public class PaymentService {
             response.put("internalOrderId", order.getId());
             response.put("email", user.getEmail());
             response.put("name", user.getName());
-            response.put("key", razorpayConfig.getKey());  // ✔ Return key to frontend
-
+            response.put("key", razorpayConfig.getKey());  // ✔ Add publishable key
 
             return response;
 
         } catch (Exception ex) {
             throw new RuntimeException("Create order failed: " + ex.getMessage());
         }
-
     }
-
-
     // =========================================================================
     // VERIFY SIGNATURE & FINALIZE ORDER
     // =========================================================================

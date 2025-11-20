@@ -19,8 +19,8 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("api/orderdetails")
 public class OrderDetailsController {
-    @Autowired
-    private CartService cartService;
+//    @Autowired
+//    private CartService cartService;
     @Autowired
     private UserRepository userRepository;
     @Autowired

@@ -1,6 +1,4 @@
 package codex_rishi.ecom_spring.model;
-
-import codex_rishi.ecom_spring.model.OrderItem;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
