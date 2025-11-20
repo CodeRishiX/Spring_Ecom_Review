@@ -1,0 +1,66 @@
+/* Order Details Page Specific CSS */
+.order-details-container {
+    margin: 40px auto;
+    max-width: 700px;
+    background: var(--white);
+    border-radius: 18px;
+    box-shadow: 0 6px 20px rgba(59, 93, 80, 0.10);
+    padding: 32px;
+}
+
+.order-details-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 35px;
+}
+
+.order-details-table th,
+.order-details-table td {
+    text-align: left;
+    padding: 14px 12px;
+    font-size: 1.13rem;
+    color: var(--text-dark);
+    border-bottom: 1px solid #eee;
+}
+
+.order-details-table th {
+    font-weight: 700;
+    background: var(--bg-light);
+}
+
+.order-product-thumb {
+    width: 70px;
+    height: 70px;
+    border-radius: 8px;
+    object-fit: cover;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.07);
+    margin-right: 14px;
+}
+
+.order-product-name {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+/* Hide any action buttons if included accidentally */
+.order-details-table .btn,
+.order-details-table [role="button"],
+.order-details-table .quantity-control {
+    display: none !important;
+}
+
+.order-summary-total {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--secondary-color);
+    padding: 10px 0 0 0;
+    text-align: right;
+}
+
+@media (max-width: 600px) {
+    .order-details-container {padding: 12px;}
+    .order-details-table th, .order-details-table td {padding: 8px 5px;}
+    .order-product-thumb {width: 52px; height: 52px;}
+    .order-summary-total {font-size: 1.1rem;}
+}

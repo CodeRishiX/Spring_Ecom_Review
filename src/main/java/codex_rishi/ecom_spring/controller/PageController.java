@@ -1,12 +1,21 @@
 package codex_rishi.ecom_spring.controller;
 
+import codex_rishi.ecom_spring.model.User;
+import codex_rishi.ecom_spring.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.security.Principal;
 
 @Controller
 public class PageController {
+
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping("/about")
     public String aboutPage() {
@@ -36,6 +45,24 @@ public class PageController {
     public String updateProductPage() {
         return "update-product";
     }
+
+
+    @GetMapping("/order-details")
+    public String orderDetails(Model model, Principal principal) {
+        User user = userRepository.findByEmail(principal.getName());
+        model.addAttribute("userId", user.getId());
+        return "order-details";
+    }
+    @GetMapping("/payment-success")
+    public String paymentSuccess(@RequestParam("orderId") Long orderId, Model model) {
+        model.addAttribute("orderId", orderId);
+        return "payment-success";
+    }
+    @GetMapping("/payment-failed")
+    public String paymentFailedPage() {
+        return "payment-failed";
+    }
+
 
 
 }
