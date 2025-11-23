@@ -8,9 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import java.security.Principal;
-
 @Controller
 public class PageController {
 
@@ -62,7 +60,15 @@ public class PageController {
     public String paymentFailedPage() {
         return "payment-failed";
     }
+    @GetMapping("/orders")
+    public String ordersPage() {
+        return "orders";
+    }
 
-
+    @GetMapping("/orders/{orderId}")
+    public String orderDetailsPage(@PathVariable Long orderId, Model model) {
+        model.addAttribute("orderId", orderId);
+        return "Full-order-details";  // order-details.html
+    }
 
 }

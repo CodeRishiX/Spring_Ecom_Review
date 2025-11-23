@@ -1,69 +1,93 @@
 <nav class="custom-navbar navbar navbar-expand-md navbar-dark" th:fragment="navbar" aria-label="Furni navigation bar">
     <div class="container">
         <a class="navbar-brand" th:href="@{/}">SpringCart<span>.</span></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span
+                class="navbar-toggler-icon"></span></button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
+
             <!-- Main Nav Links -->
             <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
                 <li class="nav-item"><a class="nav-link active" th:href="@{/}" aria-current="page">Home</a></li>
                 <li class="nav-item"><a class="nav-link" th:href="@{/about}">About</a></li>
+
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
                     <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" th:href="@{/}">All Products</a></li>
-                        <li><hr class="dropdown-divider" /></li>
+                        <li><hr class="dropdown-divider"/></li>
                         <li><a class="dropdown-item" href="#">Popular Items</a></li>
                         <li><a class="dropdown-item" th:href="@{/new-arrivals}">New Arrivals</a></li>
                     </ul>
                 </li>
 
-                <!-- Add Product: hidden by default, only shown when role=admin -->
+                <!-- Add Product: hidden by default -->
                 <li class="nav-item admin-only d-none"><a class="nav-link" th:href="@{/add-product}">Add Product</a></li>
             </ul>
 
             <!-- CTA Links: Search, Cart, Auth -->
             <div class="custom-navbar-cta navbar-nav ms-lg-5">
+
                 <!-- Search Bar -->
                 <form class="d-flex" id="searchForm">
-                    <input class="form-control search-input me-2" type="search" id="searchInput" placeholder="Search..." aria-label="Search" />
+                    <input class="form-control search-input me-2" type="search" id="searchInput" placeholder="Search..."
+                           aria-label="Search"/>
                     <button class="btn btn-primary search-btn" type="submit"><i class="bi-search"></i></button>
                 </form>
+
                 <!-- Cart Button -->
                 <a class="btn btn-outline-dark ms-3 d-flex align-items-center" th:href="@{/cart}">
                     <i class="bi-cart-fill me-1"></i>
                     <span class="d-none d-lg-inline">Cart</span>
-                    <span class="badge bg-dark text-white ms-1 rounded-pill" id="cart-badge" style="min-width:24px; text-align:center;">0</span>
+                    <span class="badge bg-dark text-white ms-1 rounded-pill" id="cart-badge"
+                          style="min-width:24px; text-align:center;">0</span>
                 </a>
+
                 <!-- Auth Container -->
                 <div id="authContainer" class="d-flex align-items-center ms-3" style="min-width:160px;">
+
                     <!-- Sign In Button -->
-                    <a th:href="@{/oauth2/authorization/google}" id="signInButton" class="btn btn-secondary d-flex align-items-center">
+                    <a th:href="@{/oauth2/authorization/google}" id="signInButton"
+                       class="btn btn-secondary d-flex align-items-center">
                         <i class="bi bi-box-arrow-in-right me-1"></i> Sign In
                     </a>
+
                     <!-- User Profile -->
                     <div id="userProfile" class="d-none ms-3">
-                        <div class="d-flex align-items-center">
-                            <img id="userImage" src="" alt="Profile" class="rounded-circle me-2" style="width: 40px; height: 40px; object-fit: cover; border: 2px solid var(--secondary-color);" />
-                            <!-- Inline name + badges and logout button on the same row -->
-                            <div class="d-flex align-items-center">
-                                <div class="d-flex flex-column me-2">
-                                    <div class="d-flex align-items-center">
-                                        <span id="userName" class="fw-bold text-white" style="font-size: 0.9rem;"></span>
-                                        <!-- badges hidden by default; JS will toggle them -->
-                                        <span id="adminBadge" class="ms-2 badge admin-badge d-none" style="font-size: 0.7rem;"><i class="bi bi-shield-fill"></i> ADMIN</span>
-                                        <span id="userBadge" class="ms-2 badge user-badge d-none" style="font-size: 0.7rem;"><i class="bi bi-person-fill"></i> USER</span>
-                                    </div>
-                                </div>
-                                <!-- Logout styled same as Sign In button for consistency -->
-                                <a th:href="@{/logout}" id="logoutButton" class="btn btn-secondary d-flex align-items-center ms-2">
-                                    <i class="bi bi-box-arrow-right me-1"></i> Logout
-                                </a>
+
+                        <!-- Profile Dropdown -->
+                        <div class="profile-dropdown-container">
+
+                            <!-- Trigger -->
+                            <div class="profile-trigger d-flex align-items-center" style="padding:5px;">
+                                <img id="userImage" src="" alt="Profile" class="rounded-circle"
+                                     style="width:40px;height:40px;object-fit:cover;border:2px solid var(--secondary-color);">
+
+                                <span id="userName" class="fw-bold text-white ms-2" style="font-size:0.9rem;"></span>
+                                <i class="bi bi-caret-down-fill text-white ms-1 small"></i>
                             </div>
+
+                            <!-- Dropdown Menu -->
+                            <ul class="profile-dropdown-menu" style="margin-top:0;">
+                                <li><a href="#"><i class="bi bi-person-circle me-2"></i> My Profile</a></li>
+                                <li><a href="/orders"><i class="bi bi-journal-text me-2"></i> Orders</a></li>
+                                <li><a href="/wishlist"><i class="bi bi-heart-fill me-2"></i> Wishlist</a></li>
+                                <li><a href="#"><i class="bi bi-bell-fill me-2"></i> Notifications</a></li>
+                                <li><hr></li>
+                                <li class="logout-btn">
+                                    <a href="/logout"><i class="bi bi-box-arrow-right me-2"></i> Logout</a>
+                                </li>
+
+                            </ul>
+
                         </div>
+                        <!-- END DROPDOWN -->
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </nav>

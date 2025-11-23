@@ -1,5 +1,6 @@
 package codex_rishi.ecom_spring.service;
 
+import codex_rishi.ecom_spring.dto.OrderDetailsDTO;
 import codex_rishi.ecom_spring.model.CartItem;
 import codex_rishi.ecom_spring.model.User;
 import codex_rishi.ecom_spring.repository.OrderDetailsRepsository;
@@ -14,4 +15,7 @@ public class OrderDetailsService {
     public List<CartItem> getCartItemsByUser(User user) {
         return orderDetailsRepsository.findAllByUser_Id(user.getId());
     }
+
+
+
 }

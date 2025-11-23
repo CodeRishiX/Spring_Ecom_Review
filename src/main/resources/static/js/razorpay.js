@@ -1,80 +1,113 @@
 console.log("Razorpay JS Loaded");
 
-// Fetch userId injected from HTML
 const userId = window.APP_USER_ID;
 
-document.getElementById("btn-proceed").addEventListener("click", async function () {
-
+document.getElementById("btn-proceed").addEventListener("click", async () => {
     if (!userId) {
         alert("User not logged in!");
         return;
     }
 
-    let response = await fetch("/api/payment/create-order", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: userId })
-    });
+    try {
+        // -------------------------------
+        // 1️⃣ Create Order (Backend)
+        // -------------------------------
+        const res = await fetch("/api/payment/create-order", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userId })
+        });
 
-    let data = await response.json();
-    console.log("Razorpay Order Created:", data);
+        const data = await res.json();
+        console.log("Order Created:", data);
 
-    // 🔥 Important Validation
-    if (!data.key || !data.razorpayOrderId) {
-        alert("Error: Razorpay configuration missing!");
-        console.error("Missing key or orderId:", data);
-        return;
-    }
-
-    let options = {
-        key: data.key,  // ✔ will work now
-        amount: data.amount,
-        currency: data.currency,
-        name: "SpringCart",
-        description: "Order Payment",
-        order_id: data.razorpayOrderId,
-
-        prefill: {
-            name: data.name,
-            email: data.email
-        },
-
-        theme: { color: "#2f855a" },
-
-
-        handler: async function (response) {
-            let verifyRes = await fetch("/api/payment/verify", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    razorpay_payment_id: response.razorpay_payment_id,
-                    razorpay_order_id: response.razorpay_order_id,
-                    razorpay_signature: response.razorpay_signature,
-                    internalOrderId: data.internalOrderId
-                })
-            });
-            const razorpay = new Razorpay(options);
-
-            razorpay.on('payment.failed', function (response) {
-                console.log("Payment Failed:", response.error);
-                window.location.href = "/payment-failed";
-            });
-
-            razorpay.open();
-
-
-            let verifyData = await verifyRes.json();
-
-            if (verifyData.status === "success") {
-                window.location.href = "/payment-success?orderId=" + verifyData.orderId;
-            } else {
-                alert("Payment verification failed!");
-            }
+        if (!data.key || !data.razorpayOrderId || !data.internalOrderId) {
+            alert("Payment setup error. Please try again.");
+            return;
         }
-    };
 
+        const orderId = data.internalOrderId;
 
-    const razorpay = new Razorpay(options);
-    razorpay.open();
+        // -------------------------------
+        // 2️⃣ Razorpay Checkout Options
+        // -------------------------------
+        const options = {
+            key: data.key,
+            amount: data.amount,
+            currency: data.currency,
+            name: "SpringCart",
+            description: "Order Payment",
+            order_id: data.razorpayOrderId,
+
+            prefill: {
+                name: data.name,
+                email: data.email
+            },
+
+            theme: { color: "#2f855a" },
+
+            // -------------------------------------
+            // ⭐ 3️⃣ SUCCESS PAYMENT HANDLER
+            // -------------------------------------
+            handler: async (response) => {
+                console.log("Payment Success:", response);
+
+                const verifyResp = await fetch("/api/payment/verify", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        razorpay_payment_id: response.razorpay_payment_id,
+                        razorpay_order_id: response.razorpay_order_id,
+                        razorpay_signature: response.razorpay_signature,
+                        internalOrderId: orderId
+                    })
+                });
+
+                const verifyData = await verifyResp.json();
+                console.log("Verify Response:", verifyData);
+
+                if (verifyData.status === "success") {
+                    window.location.href = `/payment-success?orderId=${orderId}`;
+                } else {
+                    await markPaymentFailed(orderId);
+                }
+            },
+
+            // -------------------------------------
+            // ⭐ USER CLOSED PAYMENT POPUP
+            // -------------------------------------
+            modal: {
+                ondismiss: async () => {
+                    console.log("Payment popup closed");
+                    await markPaymentFailed(orderId);
+                }
+            }
+        };
+
+        // Razorpay instance
+        const razorpay = new Razorpay(options);
+
+        // -------------------------------------
+        // ⭐ PAYMENT FAILED FROM RAZORPAY
+        // -------------------------------------
+        razorpay.on("payment.failed", async (response) => {
+            console.log("Payment Failed:", response.error);
+            await markPaymentFailed(orderId);
+        });
+
+        // open checkout
+        razorpay.open();
+
+    } catch (err) {
+        console.error("Payment Error:", err);
+        alert("Something went wrong. Please try again.");
+    }
 });
 
+// ------------------------------------------------------
+// 🔥 Reusable function → Marks Failed in Backend
+// ------------------------------------------------------
+async function markPaymentFailed(orderId) {
+    await fetch(`/api/payment/failed/${orderId}`, { method: "POST" });
+    window.location.href = "/payment-failed";
+}

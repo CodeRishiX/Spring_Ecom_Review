@@ -1,4 +1,7 @@
 package codex_rishi.ecom_spring.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,8 +24,10 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Avoid serializing the whole User inside Order (prevents big nested objects / cycles)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User user;
 
     private BigDecimal totalAmount;
@@ -36,6 +41,8 @@ public class Order {
 
     private LocalDateTime createdAt;
 
+    // This is the forward side of the relationship for JSON (managed)
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<OrderItem> orderItems;
 }
