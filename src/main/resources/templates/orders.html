@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders - SpringCart</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh; }
+
+        .orders-wrapper { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+        .page-header { text-align: center; margin-bottom: 50px; animation: fadeInDown 0.6s ease; }
+        .page-header h2 {
+            font-size: 2.5rem; font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin-bottom: 10px;
+        }
+        .page-header p { color: #6c757d; font-size: 1.1rem; }
+
+        .order-card {
+            background: #fff; border-radius: 20px; padding: 25px; margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+            cursor: pointer; position: relative; overflow: hidden;
+            border: 2px solid transparent; animation: fadeInUp 0.5s ease backwards;
+        }
+        .order-card:nth-child(1) { animation-delay: 0.1s; }
+        .order-card:nth-child(2) { animation-delay: 0.2s; }
+        .order-card:nth-child(3) { animation-delay: 0.3s; }
+        .order-card:nth-child(4) { animation-delay: 0.4s; }
+        .order-card:nth-child(5) { animation-delay: 0.5s; }
+        .order-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            opacity: 0; transition: opacity 0.3s ease; z-index: -1; border-radius: 20px;
+        }
+        .order-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(255,215,0,0.22), 0 0 0 3px #ffd700;
+            border-color: #ffd700;
+        }
+        .order-card:hover::before { opacity: 0.14; }
+        .order-card:active { transform: translateY(-8px) scale(1.01); }
+
+        /* IMAGE WRAPPER FIX */
+        .order-img-wrapper {
+            position: relative; width: 110px; height: 110px; border-radius: 16px;
+            overflow: hidden; background: #f3f6fc; box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+            display: flex; align-items: center; justify-content: center;
+            transition: transform 0.32s cubic-bezier(.37,1.16,.36,.80);
+        }
+        .order-card:hover .order-img-wrapper {
+            transform: rotate(-5deg) scale(1.11);
+            box-shadow: 0 8px 36px rgba(250,215,69,0.16);
+            outline: 2.5px solid #FFD600;
+        }
+        /* IMAGE FITS PERFECT */
+        .order-img {
+            display: block; width: 100%; height: 100%;
+            object-fit: cover; border-radius: 16px;
+            background: #f3f6fc; transition: transform 0.35s cubic-bezier(.37,1.16,.36,.83);
+        }
+        .order-card:hover .order-img { transform: scale(1.14); }
+
+        .order-content { flex: 1; padding-left: 25px; }
+        .order-title {
+            font-size: 1.35rem; font-weight: 700; color: #2d3748; margin-bottom: 8px;
+            transition: color 0.26s ease;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .order-card:hover .order-title { color: #667eea; }
+        .order-meta { display: flex; align-items: center; gap: 20px; margin-top: 12px; flex-wrap: wrap; }
+        .order-price {
+            font-size: 1.6rem; font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .order-date { color: #718096; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; }
+        .order-id { color: #a0aec0; font-size: 0.85rem; font-family: 'Courier New', monospace; }
+
+        /* STATUS BADGES */
+        .status-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 8px 16px; border-radius: 50px; font-weight: 600; font-size: 0.9rem;
+            text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.3s ease;
+        }
+        .status-badge i { font-size: 1.1rem; }
+        .status-paid {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white; box-shadow: 0 4px 12px rgba(16,185,129,0.3);
+        }
+        .order-card:hover .status-paid { box-shadow: 0 6px 20px rgba(16,185,129,0.44); transform: scale(1.045);}
+        .status-failed {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white; box-shadow: 0 4px 12px rgba(239,68,68,0.24);
+        }
+        .order-card:hover .status-failed { box-shadow: 0 6px 20px rgba(239,68,68,0.36); transform: scale(1.045);}
+        .status-pending {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white; box-shadow: 0 4px 12px rgba(245,158,11,0.25);
+        }
+        .order-card:hover .status-pending { box-shadow: 0 6px 20px rgba(245,158,11,0.37); transform: scale(1.045);}
+        .arrow-icon {
+            font-size: 1.8rem; color: #cbd5e0; transition: all 0.31s cubic-bezier(.37,1.16,.36,.80);
+            margin-left: auto;
+        }
+        .order-card:hover .arrow-icon { color: #ffd700; transform: translateX(8px);}
+        .empty-state {
+            text-align: center; padding: 80px 20px; animation: fadeIn 0.6s ease;
+        }
+        .empty-state img {
+            width: 180px; opacity: 0.7; margin-bottom: 30px; animation: float 3s ease-in-out infinite;
+        }
+        .empty-state h4 { color: #4a5568; font-size: 1.5rem; font-weight: 600; }
+        .empty-state p { color: #a0aec0; margin-top: 10px; }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes float { 0%,100% { transform: translateY(0);} 50% { transform: translateY(-15px);}}
+        @media (max-width: 768px) {
+            .page-header h2 { font-size: 2rem; }
+            .order-card { padding: 20px; }
+            .order-img-wrapper { width: 85px; height: 85px; }
+            .order-content { padding-left: 15px; }
+            .order-title { font-size: 1.1rem; }
+            .order-price { font-size: 1.3rem; }
+            .order-meta { gap: 12px; }
+            .arrow-icon { display: none; }
+        }
+    </style>
+</head>
+
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+<div class="container orders-wrapper">
+    <div class="page-header">
+        <h2><i class="bi bi-bag-check-fill"></i> My Orders</h2>
+        <p>Track and manage all your purchases</p>
+    </div>
+    <div id="orders-container"></div>
+</div>
+<div th:replace="fragments/footer :: footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/app.js}"></script>
+<script>
+    async function loadOrders() {
+        let res = await fetch("/api/orders");
+        let orders = await res.json();
+        const container = document.getElementById("orders-container");
+        container.innerHTML = "";
+        if (!Array.isArray(orders) || orders.length === 0) {
+            container.innerHTML = `
+                    <div class="empty-state">
+                        <img src="https://cdn-icons-png.flaticon.com/512/2038/2038854.png" alt="No orders">
+                        <h4>No Orders Yet</h4>
+                        <p>Start shopping to see your orders here</p>
+                    </div>`;
+            return;
+        }
+        orders.forEach(order => {
+            let firstImage = order.items && order.items.length > 0
+                ? `/api/product/${order.items[0].product.id}/image`
+                : "https://placehold.co/100x100?text=No+Image";
+            let firstName = order.items && order.items.length > 0
+                ? order.items[0].product.name
+                : "Product";
+            let statusClass, statusIcon;
+            if (order.status === "PAID") {
+                statusClass = "status-paid"; statusIcon = "bi-check-circle-fill";
+            } else if (order.status === "FAILED") {
+                statusClass = "status-failed"; statusIcon = "bi-x-circle-fill";
+            } else {
+                statusClass = "status-pending"; statusIcon = "bi-clock-fill";
+            }
+            container.innerHTML += `
+                    <div class="order-card" onclick="window.location='/orders/${order.id}'">
+                        <div class="d-flex align-items-center">
+                            <div class="order-img-wrapper">
+                                <img src="${firstImage}" class="order-img" alt="${firstName}">
+                            </div>
+                            <div class="order-content">
+                                <div class="order-title">${firstName}</div>
+                                <div class="order-meta">
+                                    <div class="order-price">₹${order.totalAmount}</div>
+                                    <span class="status-badge ${statusClass}">
+                                        <i class="bi ${statusIcon}"></i>
+                                        ${order.status}
+                                    </span>
+                                </div>
+                                <div class="order-id mt-2">Order #${order.id}</div>
+                            </div>
+                            <i class="bi bi-arrow-right-circle-fill arrow-icon"></i>
+                        </div>
+                    </div>
+                `;
+        });
+    }
+    loadOrders();
+</script>
+</body>
+</html>

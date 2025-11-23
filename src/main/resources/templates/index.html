@@ -15,11 +15,52 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
 
     <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <style>
+        /* --- FIXED DROPDOWN CSS HERE --- */
+        .profile-dropdown-container {
+            position: relative;
+            cursor: pointer;
+        }
+        .profile-trigger {
+            display: flex;
+            align-items: center;
+            padding: 5px;
+            gap: 6px;
+        }
+        .profile-dropdown-menu {
+            position: absolute;
+            top: 48px;
+            right: 0;
+            background: #fff;
+            width: 180px;
+            list-style: none;
+            padding: 10px 0;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            display: none;
+            z-index: 3000;
+            margin-top:0;
+        }
+        .profile-dropdown-menu li a {
+            display: block;
+            padding: 10px 18px;
+            font-size: 0.9rem;
+            color: #333;
+        }
+        .profile-dropdown-menu li a:hover {
+            background: #f5f5f5;
+        }
+        .profile-dropdown-container:hover .profile-dropdown-menu,
+        .profile-dropdown-menu:hover {
+            display: block !important;
+        }
+    </style>
 </head>
 <body>
 
 <!-- Navigation Bar -->
-<nav class="custom-navbar navbar navbar-expand-md navbar-dark" arial-label="Furni navigation bar">
+<nav class="custom-navbar navbar navbar-expand-md navbar-dark" aria-label="Furni navigation bar">
     <div class="container">
         <a class="navbar-brand" th:href="@{/}">SpringCart<span>.</span></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -54,7 +95,7 @@
                     <button class="btn btn-primary search-btn" type="submit"><i class="bi-search"></i></button>
                 </form>
 
-                <!-- Cart Button (keep classes identical; badge min-width added to keep size stable) -->
+                <!-- Cart Button -->
                 <a class="btn btn-outline-dark ms-3 d-flex align-items-center" th:href="@{/cart}">
                     <i class="bi-cart-fill me-1"></i>
                     <span class="d-none d-lg-inline">Cart</span>
@@ -63,36 +104,52 @@
 
                 <!-- Auth Container -->
                 <div id="authContainer" class="d-flex align-items-center ms-3" style="min-width:160px;">
-                    <!-- Sign In Button (shown when logged out) -->
+
+                    <!-- Sign In Button -->
                     <a th:href="@{/oauth2/authorization/google}" id="signInButton" class="btn btn-secondary d-flex align-items-center">
                         <i class="bi bi-box-arrow-in-right me-1"></i> Sign In
                     </a>
 
-                    <!-- User Profile (shown when logged in) -->
+                    <!-- User Profile -->
                     <div id="userProfile" class="d-none ms-3">
-                        <div class="d-flex align-items-center">
-                            <img id="userImage" src="" alt="Profile" class="rounded-circle me-2" style="width: 40px; height: 40px; object-fit: cover; border: 2px solid var(--secondary-color);" />
-                            <div class="d-flex flex-column">
-                                <div class="d-flex align-items-center">
-                                    <span id="userName" class="fw-bold text-white" style="font-size: 0.9rem;"></span>
-                                    <!-- badges hidden by default -->
-                                    <span id="adminBadge" class="ms-2 badge admin-badge d-none" style="font-size: 0.7rem;"><i class="bi bi-shield-fill"></i> ADMIN</span>
-                                    <span id="userBadge" class="ms-2 badge user-badge d-none" style="font-size: 0.7rem;"><i class="bi bi-person-fill"></i> USER</span>
-                                </div>
-                                <!-- Logout uses same button styling as Sign In so they match visually after login -->
-                                <a th:href="@{/logout}" id="logoutButton" class="btn btn-secondary d-inline-flex align-items-center mt-2" style="padding: 0.25rem 0.75rem; font-size:0.85rem;">
-                                    <i class="bi bi-box-arrow-right me-1"></i> Logout
-                                </a>
+
+                        <div class="profile-dropdown-container">
+
+                            <div class="profile-trigger d-flex align-items-center">
+                                <img id="userImage" src="" alt="Profile" class="rounded-circle" style="width:40px;height:40px;object-fit:cover;border:2px solid var(--secondary-color);">
+                                <span id="userName" class="fw-bold text-white ms-2" style="font-size:0.9rem;"></span>
+                                <i class="bi bi-caret-down-fill text-white ms-1 small"></i>
                             </div>
+
+                            <ul class="profile-dropdown-menu">
+                                <li><a href="#"><i class="bi bi-person-circle me-2"></i> My Profile</a></li>
+                                <li><a href="/orders"><i class="bi bi-journal-text me-2"></i> Orders</a></li>
+                                <li><a href="/wishlist"><i class="bi bi-heart-fill me-2"></i> Wishlist</a></li>
+                                <li><a href="#"><i class="bi bi-bell-fill me-2"></i> Notifications</a></li>
+                                <li><hr></li>
+                                <li class="logout-btn">
+                                    <a href="/logout"><i class="bi bi-box-arrow-right me-2"></i> Logout</a>
+                                </li>
+
+                            </ul>
                         </div>
+
                     </div>
 
                 </div>
+
             </div>
 
         </div>
     </div>
 </nav>
+<!-- Everything Below (Hero, Carousel, Products, etc.) REMAINS SAME -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/app.js}" defer></script>
+</body>
+</html>
+
 
 <!-- Hero Section -->
 <!-- Hero Section with Animated Image Carousel -->
@@ -149,6 +206,18 @@
         overflow: hidden;
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
     }
+    .profile-dropdown-menu li.logout-btn a {
+        background: var(--secondary-color) !important;
+        color: var(--text-dark) !important;
+        font-weight: 600;
+        border-radius: 6px;
+    }
+
+    .profile-dropdown-menu li.logout-btn a:hover {
+        background: #f8b810 !important; /* Same hover as .btn-secondary:hover */
+        color: #000 !important;
+    }
+
 
     /* Carousel Container */
     .carousel-container {
@@ -364,21 +433,6 @@
         <h2 class="section-title text-center fw-bolder mb-5" id="productsTitle">
             Our Products
         </h2>
-<!--        &lt;!&ndash; SKELETON CARDS: Add this above productGrid or inside it if preferred &ndash;&gt;-->
-<!--        <div id="productSkeletons">-->
-<!--            <div class="col" style="margin-bottom:40px;" >-->
-<!--                <div class="card product-card">-->
-<!--                    <div class="loading-skeleton" style="height:200px; border-radius:8px;"></div>-->
-<!--                    <div class="card-body">-->
-<!--                        <div class="loading-skeleton" style="height:24px; width:70%; margin-bottom:10px;"></div>-->
-<!--                        <div class="loading-skeleton" style="height:18px; width:40%;"></div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            &lt;!&ndash; Repeat above block 8 times (or as many skeleton cards as grid columns) &ndash;&gt;-->
-<!--        </div>-->
-
-
         <!-- PRODUCT GRID -->
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4
                     justify-content-center product-grid"
@@ -445,97 +499,6 @@
         </div>
     </div>
 </div>
-
-<!--&lt;!&ndash; Footer Section &ndash;&gt;-->
-<!--<footer class="footer-section">-->
-<!--    <div class="container position-relative">-->
-<!--        <div class="sofa-img">-->
-<!--            <img src="https://placehold.co/400x380/3b5d50/ffffff?text=SpringCart&font=inter" alt="Decorative" class="img-fluid" />-->
-<!--        </div>-->
-
-<!--        <div class="row">-->
-<!--            <div class="col-lg-8">-->
-<!--                <div class="subscription-form">-->
-<!--                    <h3 class="d-flex align-items-center mb-3"><i class="bi bi-envelope-paper me-2" style="font-size: 1.5rem;"></i><span>Subscribe to Newsletter</span></h3>-->
-<!--                    <form action="#" class="row g-3">-->
-<!--                        <div class="col-auto">-->
-<!--                            <input type="text" class="form-control" placeholder="Enter your name" />-->
-<!--                        </div>-->
-<!--                        <div class="col-auto">-->
-<!--                            <input type="email" class="form-control" placeholder="Enter your email" />-->
-<!--                        </div>-->
-<!--                        <div class="col-auto">-->
-<!--                            <button class="btn btn-secondary"><i class="bi bi-send"></i></button>-->
-<!--                        </div>-->
-<!--                    </form>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-
-<!--        <div class="row g-5 mb-5">-->
-<!--            <div class="col-lg-4">-->
-<!--                <div class="mb-4 footer-logo-wrap"><a href="#" class="footer-logo">SpringCart<span>.</span></a></div>-->
-<!--                <p class="mb-4">Your one-stop shop for all things trendy and essential. We bring you the best products at unbeatable prices.</p>-->
-<!--                <p>Contact: debangshubhattacharya4@gmail.com</p>-->
-<!--                <ul class="list-unstyled custom-social d-flex gap-3">-->
-<!--                    <li><a href="#"><i class="bi bi-facebook"></i></a></li>-->
-<!--                    <li><a href="#"><i class="bi bi-twitter"></i></a></li>-->
-<!--                    <li><a href="#"><i class="bi bi-instagram"></i></a></li>-->
-<!--                    <li><a href="#"><i class="bi bi-linkedin"></i></a></li>-->
-<!--                </ul>-->
-<!--            </div>-->
-
-<!--            <div class="col-lg-8">-->
-<!--                <div class="row links-wrap">-->
-<!--                    <div class="col-6 col-sm-6 col-md-3">-->
-<!--                        <ul class="list-unstyled">-->
-<!--                            <li><a th:href="@{/about}">About us</a></li>-->
-<!--                            <li><a href="#">Services</a></li>-->
-<!--                            <li><a href="#">Blog</a></li>-->
-<!--                            <li><a href="#">Contact us</a></li>-->
-<!--                        </ul>-->
-<!--                    </div>-->
-<!--                    <div class="col-6 col-sm-6 col-md-3">-->
-<!--                        <ul class="list-unstyled">-->
-<!--                            <li><a href="#">Support</a></li>-->
-<!--                            <li><a href="#">Knowledge base</a></li>-->
-<!--                            <li><a href="#">Live chat</a></li>-->
-<!--                        </ul>-->
-<!--                    </div>-->
-<!--                    <div class="col-6 col-sm-6 col-md-3">-->
-<!--                        <ul class="list-unstyled">-->
-<!--                            <li><a href="#">Jobs</a></li>-->
-<!--                            <li><a href="#">Our team</a></li>-->
-<!--                            <li><a href="#">Privacy Policy</a></li>-->
-<!--                        </ul>-->
-<!--                    </div>-->
-<!--                    <div class="col-6 col-sm-6 col-md-3">-->
-<!--                        <ul class="list-unstyled">-->
-<!--                            <li><a th:href="@{/}">All Products</a></li>-->
-<!--                            <li><a th:href="@{/new-arrivals}">New Arrivals</a></li>-->
-<!--                            <li><a href="#">Popular Items</a></li>-->
-<!--                        </ul>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-
-<!--        <div class="copyright">-->
-<!--            <div class="row pt-4">-->
-<!--                <div class="col-lg-6">-->
-<!--                    <p class="mb-2 text-center text-lg-start">&copy; SpringCart 2025. All rights reserved.</p>-->
-<!--                </div>-->
-<!--                <div class="col-lg-6 text-center text-lg-end">-->
-<!--                    <ul class="list-unstyled d-inline-flex ms-auto">-->
-<!--                        <li class="me-4"><a href="#">Terms &amp; Conditions</a></li>-->
-<!--                        <li><a href="#">Privacy Policy</a></li>-->
-<!--                    </ul>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</footer>-->
-<!-- FOOTER -->
 <div th:replace="fragments/footer :: footer"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>

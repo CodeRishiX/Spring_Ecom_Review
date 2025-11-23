@@ -532,4 +532,59 @@ a:hover {
   0% { left: -100%; }
   100% { left: 100%; }
 }
+/* PROFILE DROPDOWN (FIXED HOVER ISSUE) */
+.profile-dropdown-container {
+  position: relative;
+}
+
+.profile-trigger {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+/* Dropdown box */
+.profile-dropdown-menu {
+  position: absolute;
+  top: 55px;
+  right: 0;
+  background: white;
+  list-style: none;
+  padding: 10px 0;
+  border-radius: 10px;
+  width: 180px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+  display: none;
+  z-index: 2000;
+}
+
+/* KEEP DROPDOWN OPEN when hovering */
+.profile-dropdown-container:hover .profile-dropdown-menu,
+.profile-dropdown-menu:hover {
+  display: block !important;
+}
+
+.profile-dropdown-menu li a {
+  display: block;
+  padding: 10px 18px;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.profile-dropdown-menu li a:hover {
+  background: #f5f5f5;
+}
+.profile-dropdown-menu li.logout-btn a {
+  background: var(--secondary-color) !important;
+  color: var(--text-dark) !important;
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+.profile-dropdown-menu li.logout-btn a:hover {
+  background: #f8b810 !important; /* Same hover as .btn-secondary:hover */
+  color: #000 !important;
+}
+
 

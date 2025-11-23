@@ -16,4 +16,6 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
 
     // Custom query to find a cart item by user and product
     Optional<CartItem> findByUserAndProduct(User user, Product product);
+    CartItem findTopByUser_IdOrderByIdDesc(Long userId);
+
 }

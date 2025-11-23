@@ -254,5 +254,21 @@
             loadProductsPage(0, pageSize);
         }
     });
+    // PROFILE DROPDOWN TOGGLE ON MOBILE
+    document.addEventListener("DOMContentLoaded", () => {
+        const trigger = document.querySelector(".profile-trigger");
+        const dropdown = document.querySelector(".profile-dropdown-menu");
 
+        if (!trigger || !dropdown) return;
+
+        trigger.addEventListener("click", (e) => {
+            e.stopPropagation();
+            dropdown.style.display =
+                dropdown.style.display === "block" ? "none" : "block";
+        });
+
+        document.addEventListener("click", () => {
+            dropdown.style.display = "none";
+        });
+    });
 })();
