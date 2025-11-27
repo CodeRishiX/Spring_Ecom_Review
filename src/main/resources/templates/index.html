@@ -131,10 +131,68 @@
         .badge.sale { background: var(--danger); color: white; }
         .badge.new { background: var(--primary); color: white; }
 
-        .product-actions { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%) translateY(20px); display: flex; gap: 10px; opacity: 0; transition: all 0.3s ease; z-index: 3; }
-        .product-card:hover .product-actions { opacity: 1; transform: translateX(-50%) translateY(0); }
-        .action-btn { width: 45px; height: 45px; border-radius: 50%; background: white; border: none; display: flex; align-items: center; justify-content: center; color: var(--dark); font-size: 1.1rem; box-shadow: 0 5px 15px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.2s; }
-        .action-btn:hover { background: var(--secondary); color: var(--dark); transform: scale(1.1); }
+        /* Product card base */
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid transparent;  /* reserve space for yellow border */
+            box-sizing: border-box;
+            transition:
+                    transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+                    box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+                    border-color 0.3s ease;
+        }
+
+        /* Hover: bulge + glow + yellow border */
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(59, 93, 80, 0.15), 0 0 20px rgba(249, 191, 41, 0.4);
+            border-color: #f9bf29;   /* yellow border shows, thickness stays 3px */
+        }
+
+        /* Actions (eye button) */
+        .product-actions {
+            position: absolute;
+            bottom: 25px; /* a bit higher so it never gets clipped */
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            display: flex;
+            gap: 10px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 5; /* above image/content */
+        }
+
+        .product-card:hover .product-actions {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Action button style */
+        .action-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark);
+            font-size: 1.1rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background: var(--secondary);
+            color: var(--dark);
+            transform: scale(1.1);
+        }
+
 
         .product-info { padding: 20px; text-align: left; }
         .product-category { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 5px; }
