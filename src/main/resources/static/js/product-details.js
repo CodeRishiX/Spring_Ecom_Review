@@ -80,9 +80,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
-// ============================
-// ADD TO CART
-// ============================
 document.getElementById("addToCartBtn")?.addEventListener("click", async () => {
     try {
         const auth = await fetch(`${API_BASE}/auth/status`, { credentials: "include" }).then(r => r.json());

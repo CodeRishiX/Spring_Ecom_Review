@@ -164,7 +164,7 @@
 <!-- Form Submission Script and Role button visibility (unchanged, as in your original) -->
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        fetch('http://localhost:8080/api/user/role', { credentials: 'include' })
+        fetch('https://springcart.onrender.com/api/user/role', { credentials: 'include' })
             .then(res => {
                 if (!res.ok) throw new Error('Unauthorized');
                 return res.text();
@@ -182,7 +182,7 @@
         const productId = urlParams.get('id');
 
         if (productId) {
-            fetch(`http://localhost:8080/api/productdetails/${productId}`)
+            fetch(`https://springcart.onrender.com/api/productdetails/${productId}`)
                 .then(res => res.json())
                 .then(product => {
                     document.getElementById('brand').value = product.brand || '';
@@ -193,7 +193,7 @@
                     document.getElementById('quantity').value = product.quantity || 0;
                     document.getElementById('releaseDate').value = product.releaseDate ? new Date(product.releaseDate).toISOString().split('T')[0] : '';
                     document.getElementById('available').checked = product.available !== false;
-                    document.getElementById('currentImage').src = `http://localhost:8080/api/product/${productId}/image`;
+                    document.getElementById('currentImage').src = `https://springcart.onrender.com/api/product/${productId}/image`;
                     document.getElementById('currentImage').onerror = function () {
                         this.src = 'https://dummyimage.com/200x200/dee2e6/6c757d.jpg';
                     };
@@ -224,7 +224,7 @@
                 }
 
                 try {
-                    const res = await fetch(`http://localhost:8080/api/productupdate/${productId}`, {
+                    const res = await fetch(`https://springcart.onrender.com/api/productupdate/${productId}`, {
                         method: 'PUT',
                         body: fd,
                         credentials: 'include'
@@ -253,7 +253,7 @@
         const userName = document.getElementById('userName');
         const adminBadge = document.getElementById('adminBadge');
 
-        fetch('http://localhost:8080/api/auth/status', { credentials: 'include' })
+        fetch('https://springcart.onrender.com/api/auth/status', { credentials: 'include' })
             .then(response => response.json())
             .then(data => {
                 if (data.authenticated) {
@@ -262,7 +262,7 @@
                     userImage.src = data.imageUrl || 'https://via.placeholder.com/40';
                     userName.textContent = data.name;
 
-                    fetch('http://localhost:8080/api/user/role', {
+                    fetch('https://springcart.onrender.com/api/user/role', {
                         credentials: 'include',
                         headers: { "Accept": "text/plain" }
                     })
@@ -285,7 +285,7 @@
 
 <script>
     window.addEventListener("DOMContentLoaded", () => {
-        fetch("http://localhost:8080/api/user/role", { credentials: "include" })
+        fetch("https://springcart.onrender.com/api/user/role", { credentials: "include" })
             .then(res => res.text())
             .then(role => {
                 const isAdmin = role === "ROLE_ADMIN";
