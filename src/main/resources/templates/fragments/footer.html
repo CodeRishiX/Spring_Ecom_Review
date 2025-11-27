@@ -1,151 +1,155 @@
-<!-- WHY CHOOSE US SECTION FRAGMENT - Can be included optionally on any page -->
-<div class="why-choose-section" th:fragment="whyChooseUs">
-    <div class="container">
-        <div class="row justify-content-between align-items-center">
-            <div class="col-lg-6">
-                <h2 class="section-title">Why Choose Us</h2>
-                <p>We provide the best products from around the world. Quality, affordability, and service you can trust.</p>
 
-                <div class="row my-5">
-                    <div class="col-6 col-md-6">
-                        <div class="feature">
-                            <div class="icon"><i class="bi bi-truck"></i></div>
-                            <h3>Fast &amp; Free Shipping</h3>
-                            <p>Reliable and fast delivery, always free.</p>
-                        </div>
-                    </div>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>SpringCart Footer</title>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
 
-                    <div class="col-6 col-md-6">
-                        <div class="feature">
-                            <div class="icon"><i class="bi bi-bag-check"></i></div>
-                            <h3>Easy to Shop</h3>
-                            <p>A seamless and enjoyable shopping experience.</p>
-                        </div>
-                    </div>
 
-                    <div class="col-6 col-md-6">
-                        <div class="feature">
-                            <div class="icon"><i class="bi bi-headset"></i></div>
-                            <h3>24/7 Support</h3>
-                            <p>We're here to help, anytime you need us.</p>
-                        </div>
-                    </div>
-
-                    <div class="col-6 col-md-6">
-                        <div class="feature">
-                            <div class="icon"><i class="bi bi-arrow-return-left"></i></div>
-                            <h3>Hassle Free Returns</h3>
-                            <p>Not quite right? No problem. We make returns easy.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-5">
-                <div class="img-wrap">
-                    <img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=1000&q=80"
-                         alt="Why Choose Us" class="img-fluid rounded-3 shadow-lg" />
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- FOOTER FRAGMENT - Main footer with newsletter, links, and copyright -->
+</head>
+<body>
+<!-- MAIN FOOTER FRAGMENT -->
 <footer class="footer-section" th:fragment="footer">
-    <div class="container position-relative">
-        <!-- Decorative image -->
-        <div class="sofa-img">
-            <img src="https://placehold.co/400x380/3b5d50/ffffff?text=SpringCart&font=inter" alt="Decorative" class="img-fluid" />
-        </div>
+    <div class="container">
+        <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-start; gap:2em 3.2em;">
 
-        <!-- Newsletter subscription -->
-        <div class="row">
-            <div class="col-lg-8">
-                <div class="subscription-form">
-                    <h3 class="d-flex align-items-center mb-3">
-                        <i class="bi bi-envelope-paper me-2" style="font-size: 1.5rem;"></i>
-                        <span>Subscribe to Newsletter</span>
-                    </h3>
-                    <form action="#" class="row g-3">
-                        <div class="col-auto">
-                            <input type="text" class="form-control" placeholder="Enter your name" />
-                        </div>
-                        <div class="col-auto">
-                            <input type="email" class="form-control" placeholder="Enter your email" />
-                        </div>
-                        <div class="col-auto">
-                            <button class="btn btn-secondary"><i class="bi bi-send"></i></button>
-                        </div>
-                    </form>
+            <!-- Left Brand: Logo + Social/Payments/Newsletter -->
+            <div style="min-width:240px; flex:1 1 220px;">
+                <a href="#" class="footer-brand">SpringCart<span>.</span></a>
+                <div style="font-size:1.08em; margin-bottom:0.7em; color:rgba(255,255,255,0.8);">
+                    Your one-stop shop for trends &amp; essentials.
                 </div>
-            </div>
-        </div>
 
-        <!-- Footer links and info -->
-        <div class="row g-5 mb-5">
-            <div class="col-lg-4">
-                <div class="mb-4 footer-logo-wrap">
-                    <a href="#" class="footer-logo">SpringCart<span>.</span></a>
+                <!-- Social and payments row -->
+                <div class="footer-social">
+                    <a href="https://facebook.com/" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                    <a href="https://twitter.com/" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
+                    <a href="https://instagram.com/" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                    <a href="https://linkedin.com/" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
                 </div>
-                <p class="mb-4">Your one-stop shop for all things trendy and essential. We bring you the best products at unbeatable prices.</p>
-                <p>Contact: debangshubhattacharya4@gmail.com</p>
-                <ul class="list-unstyled custom-social d-flex gap-3">
-                    <li><a href="#"><i class="bi bi-facebook"></i></a></li>
-                    <li><a href="#"><i class="bi bi-twitter"></i></a></li>
-                    <li><a href="#"><i class="bi bi-instagram"></i></a></li>
-                    <li><a href="#"><i class="bi bi-linkedin"></i></a></li>
-                </ul>
+
+                <div class="footer-payments">
+                    <i class="bi bi-shield-check"></i> Secure Payments
+                    <span style="margin-left:0.7em;"><i class="bi bi-arrow-return-left"></i> Easy Returns</span>
+                </div>
+
+                <!-- Newsletter subscription (email only for ecom best practice) -->
+                <form class="footer-newsletter" autocomplete="off" onsubmit="event.preventDefault();subscribeNewsletter(this);">
+                    <div class="newsletter-heading">
+                        <i class="bi bi-envelope-paper"></i>
+                        <div>Subscribe for Offers</div>
+                    </div>
+                    <div>
+                        <input type="email" name="email" placeholder="Your email" required />
+                        <button type="submit" aria-label="Subscribe">Subscribe <i class="bi bi-send-fill"></i></button>
+                    </div>
+                    <div style="margin-top:0.4em; color:rgba(255,255,255,0.48); font-size:0.89em;">
+                        Get deals &amp; hot arrivals straight to your inbox.
+                    </div>
+                </form>
             </div>
 
-            <div class="col-lg-8">
-                <div class="row links-wrap">
-                    <div class="col-6 col-sm-6 col-md-3">
-                        <ul class="list-unstyled">
-                            <li><a th:href="@{/about}">About us</a></li>
-                            <li><a href="#">Services</a></li>
-                            <li><a href="#">Blog</a></li>
-                            <li><a href="#">Contact us</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-6 col-sm-6 col-md-3">
-                        <ul class="list-unstyled">
-                            <li><a href="#">Support</a></li>
-                            <li><a href="#">Knowledge base</a></li>
-                            <li><a href="#">Live chat</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-6 col-sm-6 col-md-3">
-                        <ul class="list-unstyled">
-                            <li><a href="#">Jobs</a></li>
-                            <li><a href="#">Our team</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-6 col-sm-6 col-md-3">
-                        <ul class="list-unstyled">
+            <!-- Links grid -->
+            <div style="flex:2 1 350px; min-width:0; margin-top:0.0em;">
+                <div class="footer-grid">
+                    <div class="footer-col">
+                        <h6>Shop</h6>
+                        <ul>
                             <li><a th:href="@{/}">All Products</a></li>
                             <li><a th:href="@{/new-arrivals}">New Arrivals</a></li>
-                            <li><a href="#">Popular Items</a></li>
+                            <li><a href="#">Trending</a></li>
+                            <li><a href="#">Best Sellers</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h6>Company</h6>
+                        <ul>
+                            <li><a th:href="@{/about}">About Us</a></li>
+                            <li><a href="#">Careers</a></li>
+                            <li><a href="#">Blog</a></li>
+                            <li><a href="#">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h6>Support</h6>
+                        <ul>
+                            <li><a href="#">Orders &amp; Help</a></li>
+                            <li><a href="#">Return Policy</a></li>
+                            <li><a href="#">Shipping Info</a></li>
+                            <li><a href="#">Live Chat</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h6>Legal</h6>
+                        <ul>
+                            <li><a href="#">Terms &amp; Conditions</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Accessibility</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Copyright -->
-        <div class="copyright">
-            <div class="row pt-4">
-                <div class="col-lg-6">
-                    <p class="mb-2 text-center text-lg-start">&copy; SpringCart 2025. All rights reserved.</p>
-                </div>
-                <div class="col-lg-6 text-center text-lg-end">
-                    <ul class="list-unstyled d-inline-flex ms-auto">
-                        <li class="me-4"><a href="#">Terms &amp; Conditions</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                    </ul>
-                </div>
-            </div>
+        <!-- Subtle branded decorative image (Sofa or Product: will show only on desktop) -->
+        <div class="sofa-img" aria-hidden="true">
+            <!-- Use a branded ecommerce image or keep the placeholder for now.
+                If you want this to show your own product, replace src below (160x100~200px).
+                For IntelliJ: place sofa.jpg in static/img, then src="/img/sofa.jpg" -->
+            <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/790ff365-2243-5a94-a027-ac5bd7c48979/14905bc2-10d7-526a-8286-e84ca4465d93.jpg" alt="" loading="lazy" />
+        </div>
+
+        <!-- Copyright bar -->
+        <div class="footer-copyright">
+            &copy; SpringCart 2025. All rights reserved.
+            <span> | </span>
+            <a href="#">Terms</a>
+            <a href="#">Privacy</a>
         </div>
     </div>
 </footer>
+
+<script>
+    // Newsletter subscribe simulation
+    function subscribeNewsletter(form) {
+        var email = form.email.value.trim();
+        if (email.length < 6 || !/^[^@]+@[^@]+\.[^@]+$/.test(email)) {
+            alert('Enter a valid email address!');
+            return;
+        }
+        form.email.value = "";
+        form.email.disabled = true;
+        form.querySelector("button[type='submit']").disabled = true;
+        form.querySelector("button[type='submit']").textContent = "Subscribed!";
+        setTimeout(function() {
+            form.email.disabled = false;
+            form.querySelector("button[type='submit']").disabled = false;
+            form.querySelector("button[type='submit']").textContent = "Subscribe";
+        }, 2700);
+    }
+
+    // Product image parallax - makes the small product pic move slightly on hover (for ultra-modern effect)
+    (function () {
+        const sofa = document.querySelector(".footer-section .sofa-img");
+        if (!sofa) return;
+
+        document.addEventListener("mousemove", function (e) {
+            const footer = document.querySelector(".footer-section");
+            if (!footer) return;
+            const rect = footer.getBoundingClientRect();
+            if (e.clientY > rect.bottom || e.clientY < rect.top || e.clientX < rect.left || e.clientX > rect.right) {
+                sofa.style.transform = "translate(0,0)";
+                return;
+            }
+            const relX = (e.clientX - rect.left) / rect.width - 0.5;
+            const relY = (e.clientY - rect.top) / rect.height - 0.5;
+
+            sofa.style.transform =
+                "translate(" + (relX * 8).toFixed(1) + "px," + (relY * 8).toFixed(1) + "px)";
+        });
+    })();
+</script>
+</body>
+</html>

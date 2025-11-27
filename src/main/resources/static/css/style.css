@@ -335,19 +335,257 @@ a:hover {
 }
 
 /* =============================== FOOTER =============================== */
+
+
+ :root {
+   --primary-color: #3b5d50;
+   --secondary-color: #f9bf29;
+   --text-dark: #2f2f2f;
+   --text-light: #7a7a7a;
+   --bg-light: #eff2f1;
+   --white: #ffffff;
+   --footer-bg: #141b1b;
+ }
+
+body {
+  margin: 0;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background-color: #F5F5DC;
+  color: var(--text-light);
+}
+
+/* ========== MODERN ECOM FOOTER ========== */
 .footer-section {
-  background: var(--primary-color);
-  padding: 8rem 0 3rem;
-  color: rgba(255,255,255,0.6);
+  background: radial-gradient(circle at top left, #3b5d50 0, #141b1b 45%, #0c1211 100%);
+  color: rgba(255, 255, 255, 0.87);
+  padding: 2.2rem 0 0.9rem;
+  position: relative;
+  overflow: hidden;
+  font-size: 0.97rem;
 }
 
-.footer-section .footer-logo {
-  font-size: 2rem;
+.footer-section .container {
+  position: relative;
+  z-index: 1;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 0 18px;
+}
+
+/* Brand Block / Logo */
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 1em;
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #fff;
+  text-decoration: none;
+}
+.footer-brand span {
+  color: var(--secondary-color);
+  font-size: 1.5em;
+}
+
+/* Social icons */
+.footer-social {
+  display: flex;
+  gap: 0.66em;
+  margin-top: 0.5em;
+}
+.footer-social a {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(249, 191, 41, 0.10);
+  border-radius: 50%;
+  color: #fff;
+  font-size: 1.05rem;
+  transition: all 0.2s;
+  border: 1px solid rgba(255,255,255,0.10);
+}
+.footer-social a:hover {
+  background: var(--secondary-color);
+  color: #252323;
+  transform: translateY(-3px) scale(1.08);
+  border-color: var(--secondary-color);
+}
+
+/* Links columns */
+.footer-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2em 3.5em;
+  margin-bottom: 1.4rem;
+}
+.footer-col {
+  min-width: 134px;
+  flex: 1 1 10%;
+}
+.footer-col h6 {
+  font-size: 0.93em;
   font-weight: 600;
-  color: var(--white);
+  color: var(--secondary-color);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.72em;
+}
+.footer-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.footer-col ul li {
+  margin-bottom: 0.36em;
+}
+.footer-col ul li a {
+  color: rgba(255, 255, 255, 0.77);
+  text-decoration: none;
+  font-size: 0.98em;
+  transition: color 0.18s, padding-left 0.19s;
+  position: relative;
+  padding-left: 0;
+}
+.footer-col ul li a:hover {
+  color: var(--secondary-color);
+  padding-left: 5px;
 }
 
-.footer-section .footer-logo span { color: var(--secondary-color); }
+/* Newsletter mini box */
+.footer-newsletter {
+  background: rgba(255,255,255,0.04);
+  border-radius: 14px;
+  padding: 1.1em 1em 1em 1em;
+  margin-bottom: 1.25em;
+  box-shadow: 0 1px 16px 0 rgba(0,0,0,0.08);
+  text-align: left;
+  max-width: 340px;
+  margin-left: 0;
+}
+.footer-newsletter .newsletter-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.72em;
+  margin-bottom: 0.6em;
+}
+.footer-newsletter .newsletter-heading i {
+  font-size: 1.25em;
+  color: var(--secondary-color);
+}
+.footer-newsletter input[type="email"] {
+  border: none;
+  border-radius: 100px;
+  background: rgba(255,255,255,0.08);
+  padding: 0.55em 1.12em;
+  font-size: 1em;
+  margin-right: 0.5em;
+  color: #fff;
+  width: 65%;
+}
+.footer-newsletter input[type="email"]::placeholder {
+  color: rgba(255,255,255,0.46);
+  font-weight: 400;
+}
+.footer-newsletter button {
+  background: var(--secondary-color);
+  color: #191817;
+  font-weight: 600;
+  border: none;
+  border-radius: 100px;
+  padding: 0.47em 1.2em;
+  font-size: 0.97em;
+  margin-top: 0.5em;
+  cursor: pointer;
+  transition: background 0.17s;
+}
+.footer-newsletter button:hover {
+  background: #e6ad09;
+}
+
+/* Payment/Security bar */
+.footer-payments {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  margin-top: 0.9em;
+  font-size: 0.95em;
+  color: rgba(255,255,255,0.79);
+}
+.footer-payments i {
+  color: var(--secondary-color);
+  font-size: 1.12em;
+  margin-right: 0.18em;
+}
+
+/* Copyright bar */
+.footer-copyright {
+  text-align: center;
+  margin-top: 1.2em;
+  font-size: 0.87em;
+  color: rgba(255,255,255,0.7);
+}
+.footer-copyright a {
+  color: rgba(255,255,255,0.5);
+  margin: 0 0.5em;
+  font-size: 0.92em;
+  transition: color 0.18s;
+}
+.footer-copyright a:hover {
+  color: var(--secondary-color);
+}
+
+/* "Sofa img" is now a small, subtle branded product image */
+.sofa-img {
+  position: absolute;
+  right: 1%;
+  bottom: 12%;
+  opacity: 0.17;
+  z-index: 0;
+  display: none;
+}
+.sofa-img img {
+  max-width: 148px;
+  filter: blur(0.2px) drop-shadow(0 6px 18px rgba(0,0,0,0.32));
+  border-radius: 23px;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+  .footer-grid {
+    flex-wrap: wrap;
+    gap: 2em 1.2em;
+  }
+  .footer-newsletter {
+    margin-bottom: 1.09em;
+    margin-left: 0;
+  }
+}
+@media (max-width: 767px) {
+  .footer-section .container {
+    padding: 0 4vw;
+  }
+  .footer-grid {
+    flex-direction: column;
+  }
+  .footer-newsletter {
+    max-width: 100%;
+    min-width: 180px;
+    padding: 1em 1em;
+    text-align: left;
+  }
+  .footer-brand {
+    margin-bottom: 0.6em;
+  }
+}
+@media (min-width: 992px) {
+  .sofa-img {
+    display: block;
+  }
+}
 
 /* =============================== PAGINATION =============================== */
 .pagination {
