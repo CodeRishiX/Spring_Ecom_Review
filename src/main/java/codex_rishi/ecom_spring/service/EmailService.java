@@ -25,7 +25,7 @@ public class EmailService {
 
             String htmlContent = """
                 <div style="font-family: Arial, sans-serif; background-color:#f7f7f7; padding:20px;">
-                    <div style="max-width:600px; margin:auto; background:white; border-radius:10px; 
+                    <div style="max-width:600px; margin:auto; background:white; border-radius:10px;
                                 padding:25px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
 
                         <h2 style="color:#4CAF50; text-align:center;">
@@ -109,7 +109,7 @@ public class EmailService {
                     </div>
 
                     <p style="font-size:14px; color:#777; text-align:center;">
-                        Your items will be shipped soon.  
+                        Your items will be shipped soon.
                         If you have any questions, reply to this email anytime!
                         <br><strong>— SpringCart Team</strong>
                     </p>

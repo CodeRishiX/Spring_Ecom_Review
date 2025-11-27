@@ -13,21 +13,16 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <link rel="stylesheet" th:href="@{/css/style.css}">
 
     <style>
-        /* --- FIXED DROPDOWN CSS HERE --- */
-        .profile-dropdown-container {
-            position: relative;
-            cursor: pointer;
+        /* --- FIXED profile hover over  DROPDOWN CSS HERE --- */
+        :root {
+            --text-light: #7a7a7a;
         }
-        .profile-trigger {
-            display: flex;
-            align-items: center;
-            padding: 5px;
-            gap: 6px;
-        }
+
         .profile-dropdown-menu {
             position: absolute;
             top: 48px;
@@ -55,400 +50,200 @@
         .profile-dropdown-menu:hover {
             display: block !important;
         }
+
+        /* ===========================
+           HERO SECTION STYLES (kept exactly as provided)
+           =========================== */
+        :root {
+            --primary: #3b5d50;
+            --secondary: #f9bf29;
+            --dark: #2f2f2f;
+            --light: #ffffff;
+            --gray: #eff2f1;
+            --text-muted: #6c757d;
+            --danger: #dc3545;
+            --glass: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body { font-family: 'Poppins', sans-serif; overflow-x: hidden; background-color: #f8f9fa; }
+
+        .hero-section { position: relative; min-height: 100vh; width: 100%; background: var(--primary); overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 80px 20px; }
+        .blob { position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.6; animation: floatBlob 10s infinite ease-in-out; z-index: 0; }
+        .blob-1 { top: -10%; left: -10%; width: 500px; height: 500px; background: #2a443a; animation-delay: 0s; }
+        .blob-2 { bottom: -10%; right: -5%; width: 400px; height: 400px; background: var(--secondary); opacity: 0.3; animation-delay: -5s; }
+        @keyframes floatBlob { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(30px, -30px); } }
+
+        .container { max-width: 1280px; width: 100%; position: relative; }
+        .hero-container { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+        .hero-content { color: var(--light); opacity: 0; transform: translateY(30px); }
+        h1 { font-size: 4rem; line-height: 1.1; font-weight: 700; margin-bottom: 24px; }
+        .highlight-text { color: var(--secondary); position: relative; display: inline-block; }
+        .highlight-text::after { content: ''; position: absolute; bottom: 5px; left: 0; width: 100%; height: 15px; background: rgba(249, 191, 41, 0.3); z-index: -1; transform: skewX(-15deg); }
+        .hero-description { font-size: 1.1rem; line-height: 1.8; color: rgba(255, 255, 255, 0.8); margin-bottom: 40px; max-width: 500px; }
+        .btn-group { display: flex; flex-wrap: wrap; gap: 20px; }
+        .btn { padding: 15px 35px; border-radius: 50px; font-weight: 600; text-decoration: none; transition: all 0.3s ease; position: relative; overflow: hidden; display: inline-flex; align-items: center; gap: 10px; border: none; cursor: pointer; font-size: 1rem; }
+        .btn-primary { background-color: var(--secondary); color: var(--primary); box-shadow: 0 10px 25px rgba(249, 191, 41, 0.3); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(249, 191, 41, 0.5); }
+        .btn-outline { background: transparent; color: var(--light); border: 2px solid rgba(255, 255, 255, 0.3); }
+        .btn-outline:hover { background: var(--light); color: var(--primary); border-color: var(--light); }
+
+        .hero-visual { position: relative; height: 600px; z-index: 2; perspective: 1000px; }
+        .visual-wrapper { width: 100%; height: 100%; position: relative; transition: transform 0.1s ease-out; }
+        .carousel-card { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 30px; overflow: hidden; box-shadow: 20px 40px 80px rgba(0, 0, 0, 0.3); z-index: 5; }
+        .carousel-track { display: flex; height: 100%; width: 100%; position: relative; }
+        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.8s ease-in-out, transform 6s ease; transform: scale(1.1); }
+        .slide.active { opacity: 1; transform: scale(1); z-index: 2; }
+        .slide img { width: 100%; height: 100%; object-fit: cover; }
+
+        .glass-card { position: absolute; bottom: 40px; left: -30px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid var(--glass-border); padding: 20px; border-radius: 20px; color: white; z-index: 10; width: 220px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); animation: floatCard 4s ease-in-out infinite; }
+        @keyframes floatCard { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        .glass-card h4 { font-size: 0.9rem; margin-bottom: 5px; color: var(--secondary); }
+        .glass-card p { font-size: 1.5rem; font-weight: bold; margin: 0; }
+        .glass-card span { font-size: 0.8rem; opacity: 0.8; font-weight: normal; }
+
+        .carousel-controls { position: absolute; bottom: 30px; right: 30px; display: flex; gap: 15px; z-index: 20; }
+        .control-btn { width: 50px; height: 50px; border-radius: 50%; border: none; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(5px); color: white; font-size: 1.2rem; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; }
+        .control-btn:hover { background: var(--secondary); color: var(--dark); transform: scale(1.1); }
+
+        .progress-container { position: absolute; bottom: 0; left: 0; width: 100%; height: 4px; background: rgba(255,255,255,0.2); z-index: 20; }
+        .progress-bar { height: 100%; background: var(--secondary); width: 0%; transition: width 0.1s linear; }
+
+        .stats-badge { position: absolute; top: 40px; right: -20px; background: var(--light); padding: 15px 25px; border-radius: 15px; box-shadow: -10px 10px 30px rgba(0,0,0,0.15); z-index: 9; animation: floatCard 5s ease-in-out infinite reverse; }
+        .stats-badge .stars { color: #FFD700; font-size: 0.8rem; }
+        .stats-badge div { font-weight: 700; color: var(--dark); margin-top: 5px; }
+
+        .product-section { padding: 100px 0; background-color: #ffffff; }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-title { font-size: 2.5rem; font-weight: 700; color: var(--dark); position: relative; display: inline-block; margin-bottom: 15px; }
+        .section-title::after { content: ''; display: block; width: 60%; height: 4px; background: var(--secondary); margin: 10px auto 0; border-radius: 2px; }
+
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; padding-bottom: 40px; }
+        .product-card { background: white; border-radius: 20px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); position: relative; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); }
+        .product-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(59, 93, 80, 0.15); border-color: transparent; }
+        .product-image-wrapper { position: relative; width: 100%; padding-top: 110%; overflow: hidden; background: #f8f9fa; }
+        .product-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; transition: transform 0.6s ease; }
+        .product-card:hover .product-img { transform: scale(1.08); }
+
+        .badge { position: absolute; top: 15px; left: 15px; padding: 6px 14px; border-radius: 30px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; z-index: 2; }
+        .badge.sale { background: var(--danger); color: white; }
+        .badge.new { background: var(--primary); color: white; }
+
+        .product-actions { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%) translateY(20px); display: flex; gap: 10px; opacity: 0; transition: all 0.3s ease; z-index: 3; }
+        .product-card:hover .product-actions { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .action-btn { width: 45px; height: 45px; border-radius: 50%; background: white; border: none; display: flex; align-items: center; justify-content: center; color: var(--dark); font-size: 1.1rem; box-shadow: 0 5px 15px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.2s; }
+        .action-btn:hover { background: var(--secondary); color: var(--dark); transform: scale(1.1); }
+
+        .product-info { padding: 20px; text-align: left; }
+        .product-category { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 5px; }
+        .product-title { font-size: 1.1rem; font-weight: 600; color: var(--dark); margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .product-rating { color: #FFD700; font-size: 0.85rem; margin-bottom: 10px; }
+        .product-rating span { color: #ccc; margin-left: 5px; font-size: 0.8rem; }
+        .product-footer { display: flex; justify-content: space-between; align-items: center; }
+        .product-price { font-size: 1.25rem; font-weight: 700; color: var(--primary); }
+        .old-price { font-size: 0.9rem; color: #bbb; text-decoration: line-through; margin-left: 6px; font-weight: 400; }
+        .add-btn-mobile { display: none; }
+
+        .pagination { display: flex; justify-content: center; list-style: none; gap: 8px; margin-top: 40px; }
+        .pagination li a { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; border: 2px solid #e9ecef; color: var(--dark); text-decoration: none; font-weight: 600; transition: all 0.3s; }
+        .pagination li a:hover, .pagination li.active a { background-color: var(--primary); border-color: var(--primary); color: white; }
+
+        @media (max-width: 992px) {
+            .hero-section { padding: 100px 20px; height: auto; min-height: auto; }
+            .hero-container { grid-template-columns: 1fr; gap: 3rem; text-align: center; }
+            h1 { font-size: 3rem; }
+            .hero-description { margin: 0 auto 30px auto; }
+            .btn-group { justify-content: center; }
+            .hero-visual { height: 500px; width: 90%; margin: 0 auto; }
+            .glass-card { left: 50%; transform: translateX(-50%); bottom: -20px; }
+            .stats-badge { right: 0; }
+        }
+
+        @media (max-width: 576px) {
+            h1 { font-size: 2.2rem; }
+            .hero-visual { height: 350px; width: 100%; }
+            .section-title { font-size: 2rem; }
+            .product-actions { opacity: 1; transform: translate(-50%, 0); bottom: 120px; }
+        }
     </style>
 </head>
 <body>
 
-<!-- Navigation Bar -->
-<nav class="custom-navbar navbar navbar-expand-md navbar-dark" aria-label="Furni navigation bar">
-    <div class="container">
-        <a class="navbar-brand" th:href="@{/}">SpringCart<span>.</span></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+<!-- Navbar fragment -->
+<div th:replace="fragments/navbar :: navbar"></div>
 
-        <div class="collapse navbar-collapse" id="navbarNav">
+<!-- HERO SECTION -->
+<section class="hero home-hero">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
 
-            <!-- Main Nav Links -->
-            <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-                <li class="nav-item"><a class="nav-link active" th:href="@{/}" aria-current="page">Home</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/about}">About</a></li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
-                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" th:href="@{/}">All Products</a></li>
-                        <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="#">Popular Items</a></li>
-                        <li><a class="dropdown-item" th:href="@{/new-arrivals}">New Arrivals</a></li>
-                    </ul>
-                </li>
-
-                <!-- Add Product: hidden by default, shown only for admin -->
-                <li class="nav-item admin-only d-none"><a class="nav-link" th:href="@{/add-product}">Add Product</a></li>
-            </ul>
-
-            <!-- CTA Links: Search, Cart, Auth -->
-            <div class="custom-navbar-cta navbar-nav ms-lg-5">
-
-                <!-- Search Bar -->
-                <form class="d-flex" id="searchForm">
-                    <input class="form-control search-input me-2" type="search" id="searchInput" placeholder="Search..." aria-label="Search" />
-                    <button class="btn btn-primary search-btn" type="submit"><i class="bi-search"></i></button>
-                </form>
-
-                <!-- Cart Button -->
-                <a class="btn btn-outline-dark ms-3 d-flex align-items-center" th:href="@{/cart}">
-                    <i class="bi-cart-fill me-1"></i>
-                    <span class="d-none d-lg-inline">Cart</span>
-                    <span class="badge bg-dark text-white ms-1 rounded-pill" id="cart-badge" style="min-width:24px; text-align:center;">0</span>
-                </a>
-
-                <!-- Auth Container -->
-                <div id="authContainer" class="d-flex align-items-center ms-3" style="min-width:160px;">
-
-                    <!-- Sign In Button -->
-                    <a th:href="@{/oauth2/authorization/google}" id="signInButton" class="btn btn-secondary d-flex align-items-center">
-                        <i class="bi bi-box-arrow-in-right me-1"></i> Sign In
-                    </a>
-
-                    <!-- User Profile -->
-                    <div id="userProfile" class="d-none ms-3">
-
-                        <div class="profile-dropdown-container">
-
-                            <div class="profile-trigger d-flex align-items-center">
-                                <img id="userImage" src="" alt="Profile" class="rounded-circle" style="width:40px;height:40px;object-fit:cover;border:2px solid var(--secondary-color);">
-                                <span id="userName" class="fw-bold text-white ms-2" style="font-size:0.9rem;"></span>
-                                <i class="bi bi-caret-down-fill text-white ms-1 small"></i>
-                            </div>
-
-                            <ul class="profile-dropdown-menu">
-                                <li><a href="#"><i class="bi bi-person-circle me-2"></i> My Profile</a></li>
-                                <li><a href="/orders"><i class="bi bi-journal-text me-2"></i> Orders</a></li>
-                                <li><a href="/wishlist"><i class="bi bi-heart-fill me-2"></i> Wishlist</a></li>
-                                <li><a href="#"><i class="bi bi-bell-fill me-2"></i> Notifications</a></li>
-                                <li><hr></li>
-                                <li class="logout-btn">
-                                    <a href="/logout"><i class="bi bi-box-arrow-right me-2"></i> Logout</a>
-                                </li>
-
-                            </ul>
-                        </div>
-
-                    </div>
-
-                </div>
-
+    <div class="container hero-container">
+        <!-- Left Content -->
+        <div class="hero-content" id="heroContent">
+            <h1>Welcome to <br> <span class="highlight-text">SpringCart</span></h1>
+            <p class="hero-description">
+                Your one-stop destination for premium quality products at unbeatable prices. Explore our exclusive range of fashion, electronics, and home essentials designed to elevate your lifestyle.
+            </p>
+            <div class="btn-group">
+                <a href="#products" class="btn btn-primary">Shop Now <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="/about" class="btn btn-outline"><i class="fa-solid fa-tags"></i> View Deals</a>
             </div>
-
         </div>
-    </div>
-</nav>
-<!-- Everything Below (Hero, Carousel, Products, etc.) REMAINS SAME -->
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-<script th:src="@{/js/app.js}" defer></script>
-</body>
-</html>
-
-
-<!-- Hero Section -->
-<!-- Hero Section with Animated Image Carousel -->
-<div class="hero">
-    <div class="container">
-        <div class="row justify-content-between align-items-center">
-            <!-- Left Content -->
-            <div class="col-lg-5">
-                <div class="intro-excerpt">
-                    <h1>Welcome to SpringCart</h1>
-                    <p class="mb-4">Shop the latest trends and exclusive deals. Discover new arrivals, bestsellers, and more!</p>
-                    <p>
-                        <a href="#products" class="btn btn-secondary me-2">Shop Now</a>
-                        <a th:href="@{/about}" class="btn btn-white-outline">Explore</a>
-                    </p>
+        <!-- Right Visual Carousel -->
+        <div class="hero-visual" id="heroVisual">
+            <div class="visual-wrapper" id="tiltWrapper">
+                <div class="carousel-card">
+                    <div class="carousel-track">
+                        <div class="slide active"><img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1200&q=80" alt="Fashion"></div>
+                        <div class="slide"><img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1200&q=80" alt="Tech"></div>
+                        <div class="slide"><img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=80" alt="Sneakers"></div>
+                        <div class="slide"><img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=1200&q=80" alt="Watch"></div>
+                        <div class="slide"><img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=1200&q=80" alt="Bag"></div>
+                    </div>
+                    <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
                 </div>
-            </div>
-
-            <!-- Right Animated Carousel -->
-            <div class="col-lg-7">
-                <div class="hero-carousel-wrapper">
-                    <div class="carousel-container">
-                        <div class="carousel-slide active" style="background-image: url('https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1200&q=80');"></div>
-                        <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&w=1200&q=80');"></div>
-                        <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170');"></div>
-                        <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1200&q=80');"></div>
-                        <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1646861039459-fd9e3aabf3fb?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1026');"></div>
-                    </div>
-
-                    <!-- Carousel Indicators -->
-                    <div class="carousel-indicators">
-                        <span class="indicator active" onclick="currentSlide(0)"></span>
-                        <span class="indicator" onclick="currentSlide(1)"></span>
-                        <span class="indicator" onclick="currentSlide(2)"></span>
-                        <span class="indicator" onclick="currentSlide(3)"></span>
-                    </div>
-
-                    <!-- Navigation Arrows -->
-                    <button class="carousel-nav prev" onclick="changeSlide(-1)">❮</button>
-                    <button class="carousel-nav next" onclick="changeSlide(1)">❯</button>
+                <div class="glass-card"><h4>Flash Deal</h4><p>Up to 70% OFF <span>on bestsellers</span></p></div>
+                <div class="stats-badge"><div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div><div>10k+ Happy Customers</div></div>
+                <div class="carousel-controls">
+                    <button class="control-btn" onclick="changeSlide(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button class="control-btn" onclick="changeSlide(1)"><i class="fa-solid fa-chevron-right"></i></button>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-
-<style>
-    /* Carousel Wrapper */
-    .hero-carousel-wrapper {
-        position: relative;
-        width: 100%;
-        height: 500px;
-        border-radius: 16px;
-        overflow: hidden;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-    }
-    .profile-dropdown-menu li.logout-btn a {
-        background: var(--secondary-color) !important;
-        color: var(--text-dark) !important;
-        font-weight: 600;
-        border-radius: 6px;
-    }
-
-    .profile-dropdown-menu li.logout-btn a:hover {
-        background: #f8b810 !important; /* Same hover as .btn-secondary:hover */
-        color: #000 !important;
-    }
-
-
-    /* Carousel Container */
-    .carousel-container {
-        position: relative;
-        width: 100%;
-        height: 100%;
-    }
-
-    /* Individual Slides */
-    .carousel-slide {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-size: cover;
-        background-position: center;
-        opacity: 0;
-        transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .carousel-slide.active {
-        opacity: 1;
-        z-index: 10;
-    }
-
-    /* Overlay for better text readability if needed */
-    .carousel-slide::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(135deg, rgba(0, 0, 0, 0.1) 0%, transparent 100%);
-    }
-
-    /* Carousel Indicators */
-    .carousel-indicators {
-        position: absolute;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        gap: 10px;
-        z-index: 20;
-    }
-
-    .indicator {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background-color: rgba(255, 255, 255, 0.5);
-        cursor: pointer;
-        transition: all 0.3s ease;
-        border: 2px solid rgba(255, 255, 255, 0.7);
-    }
-
-    .indicator.active {
-        background-color: #fff;
-        transform: scale(1.3);
-        box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
-    }
-
-    .indicator:hover {
-        background-color: rgba(255, 255, 255, 0.8);
-    }
-
-    /* Navigation Arrows */
-    .carousel-nav {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        background-color: rgba(255, 255, 255, 0.9);
-        border: none;
-        color: #333;
-        font-size: 24px;
-        padding: 12px 16px;
-        cursor: pointer;
-        border-radius: 8px;
-        z-index: 20;
-        transition: all 0.3s ease;
-        backdrop-filter: blur(5px);
-        font-weight: bold;
-    }
-
-    .carousel-nav:hover {
-        background-color: #fff;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        transform: translateY(-50%) scale(1.1);
-    }
-
-    .carousel-nav.prev {
-        left: 15px;
-    }
-
-    .carousel-nav.next {
-        right: 15px;
-    }
-
-    /* Responsive Design */
-    @media (max-width: 992px) {
-        .hero-carousel-wrapper {
-            height: 350px;
-        }
-
-        .carousel-nav {
-            padding: 10px 13px;
-            font-size: 18px;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .hero-carousel-wrapper {
-            height: 300px;
-        }
-
-        .carousel-indicators {
-            bottom: 15px;
-            gap: 8px;
-        }
-
-        .indicator {
-            width: 8px;
-            height: 8px;
-        }
-
-        .carousel-nav {
-            padding: 8px 12px;
-            font-size: 16px;
-        }
-    }
-</style>
-
-<script>
-    let currentIndex = 0;
-    const slides = document.querySelectorAll('.carousel-slide');
-    const indicators = document.querySelectorAll('.indicator');
-    const autoPlayInterval = 5000; // 5 seconds
-
-    // Initialize carousel
-    function initCarousel() {
-        slides.forEach((slide, index) => {
-            slide.classList.remove('active');
-            if (index === 0) slide.classList.add('active');
-        });
-        updateIndicators();
-    }
-
-    // Update indicators
-    function updateIndicators() {
-        indicators.forEach((indicator, index) => {
-            indicator.classList.remove('active');
-            if (index === currentIndex) indicator.classList.add('active');
-        });
-    }
-
-    // Navigate to specific slide
-    function currentSlide(n) {
-        currentIndex = n;
-        updateSlide();
-        resetAutoPlay();
-    }
-
-    // Change slide direction
-    function changeSlide(n) {
-        currentIndex += n;
-        if (currentIndex >= slides.length) currentIndex = 0;
-        if (currentIndex < 0) currentIndex = slides.length - 1;
-        updateSlide();
-        resetAutoPlay();
-    }
-
-    // Update active slide
-    function updateSlide() {
-        slides.forEach((slide) => slide.classList.remove('active'));
-        slides[currentIndex].classList.add('active');
-        updateIndicators();
-    }
-
-    // Auto-play carousel
-    let autoPlayTimer;
-    function startAutoPlay() {
-        autoPlayTimer = setInterval(() => {
-            currentIndex++;
-            if (currentIndex >= slides.length) currentIndex = 0;
-            updateSlide();
-        }, autoPlayInterval);
-    }
-
-    function resetAutoPlay() {
-        clearInterval(autoPlayTimer);
-        startAutoPlay();
-    }
-
-    // Initialize on page load
-    document.addEventListener('DOMContentLoaded', () => {
-        initCarousel();
-        startAutoPlay();
-    });
-
-    // Stop autoplay on hover (optional)
-    const carouselWrapper = document.querySelector('.hero-carousel-wrapper');
-    if (carouselWrapper) {
-        carouselWrapper.addEventListener('mouseenter', () => clearInterval(autoPlayTimer));
-        carouselWrapper.addEventListener('mouseleave', startAutoPlay);
-    }
-</script>
-<!-- Products Section -->
-<section class="product-section py-5" id="products">
-    <div class="container px-4 px-lg-5 mt-5">
-
-        <h2 class="section-title text-center fw-bolder mb-5" id="productsTitle">
-            Our Products
-        </h2>
-        <!-- PRODUCT GRID -->
-        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4
-                    justify-content-center product-grid"
-             id="productGrid">
-            <!-- JS inserts products here -->
-        </div>
-
-        <!-- PAGINATION (must be OUTSIDE the row) -->
-        <div class="d-flex justify-content-center mt-4">
-            <nav>
-                <ul id="pagination" class="pagination"></ul>
-            </nav>
-        </div>.,,,
     </div>
 </section>
-<!-- Why Choose Us Section -->
+
+<!-- PRODUCT SECTION -->
+<section class="product-section" id="products">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Our Exclusive Products</h2>
+            <p style="color: #666; max-width: 600px; margin: 0 auto;">Browse our top-rated selection of premium items curated just for you.</p>
+        </div>
+
+        <!-- JS inserts products here -->
+        <div class="product-grid" id="productGrid"></div>
+
+        <!-- Pagination -->
+        <div class="d-flex justify-content-center mt-4">
+            <nav>
+                <ul id="pagination" class="pagination">
+                    <li><a href="#"><i class="fa-solid fa-chevron-left"></i></a></li>
+                    <li class="active"><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#"><i class="fa-solid fa-chevron-right"></i></a></li>
+                </ul>
+            </nav>
+        </div>
+
+    </div>
+</section>
+
+<!-- WHY CHOOSE US -->
 <div class="why-choose-section">
     <div class="container">
         <div class="row justify-content-between align-items-center">
@@ -499,9 +294,82 @@
         </div>
     </div>
 </div>
+
+<!-- Footer fragment -->
 <div th:replace="fragments/footer :: footer"></div>
 
+<!-- SCRIPTS: keep only one copy of each and ensure no HTML inside JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script th:src="@{/js/app.js}" defer></script>
+
+<script>
+    // --- HERO & CAROUSEL LOGIC ---
+    document.addEventListener('DOMContentLoaded', () => {
+        const content = document.getElementById('heroContent');
+        const visual = document.getElementById('heroVisual');
+        setTimeout(() => {
+            if(content) {
+                content.style.opacity = '1';
+                content.style.transform = 'translateY(0)';
+                content.style.transition = 'all 1s cubic-bezier(0.2, 0.8, 0.2, 1)';
+            }
+            if(visual) {
+                visual.style.opacity = '1';
+                visual.style.transition = 'opacity 1.5s ease';
+            }
+        }, 200);
+
+        // start carousel
+        startAutoPlay();
+
+        // render products if function exists
+        if(typeof renderProducts === 'function') renderProducts();
+    });
+
+    let currentSlideIndex = 0;
+    const intervalTime = 5000;
+    let slideInterval;
+
+    function getSlides() { return document.querySelectorAll('.slide'); }
+
+    function showSlide(index) {
+        const slides = getSlides();
+        if(!slides.length) return;
+        if (index >= slides.length) currentSlideIndex = 0;
+        else if (index < 0) currentSlideIndex = slides.length - 1;
+        else currentSlideIndex = index;
+        slides.forEach(slide => slide.classList.remove('active'));
+        slides[currentSlideIndex].classList.add('active');
+
+        const progressBar = document.getElementById('progressBar');
+        if(progressBar) {
+            progressBar.style.width = '0%';
+            void progressBar.offsetWidth;
+            progressBar.style.width = '100%';
+            progressBar.style.transition = `width ${intervalTime}ms linear`;
+        }
+    }
+
+    function changeSlide(n) { clearInterval(slideInterval); showSlide(currentSlideIndex + n); startAutoPlay(); }
+
+    function startAutoPlay() { clearInterval(slideInterval); showSlide(currentSlideIndex); slideInterval = setInterval(() => { showSlide(currentSlideIndex + 1); }, intervalTime); }
+
+    // tilt effect for desktop
+    (function setupTilt(){
+        const heroVisual = document.getElementById('heroVisual');
+        const tiltWrapper = document.getElementById('tiltWrapper');
+        if(heroVisual && tiltWrapper && window.innerWidth > 992) {
+            heroVisual.addEventListener('mousemove', (e) => {
+                const rect = heroVisual.getBoundingClientRect();
+                const x = e.clientX - rect.left; const y = e.clientY - rect.top;
+                const xPercent = x / rect.width; const yPercent = y / rect.height;
+                const rotateX = (0.5 - yPercent) * 20; const rotateY = (xPercent - 0.5) * 20;
+                tiltWrapper.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+            heroVisual.addEventListener('mouseleave', () => { tiltWrapper.style.transform = 'rotateX(0) rotateY(0)'; });
+        }
+    })();
+</script>
+
 </body>
 </html>

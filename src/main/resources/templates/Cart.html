@@ -117,7 +117,7 @@
         </div>
     </div>
 </main>
-<div th:replace="fragments/footer :: whyChooseUs"></div>
+
 <!-- FOOTER FRAGMENT - Reusable footer from fragments folder -->
 <div th:replace="fragments/footer :: footer"></div>
 
@@ -203,6 +203,9 @@
     }
 
     document.addEventListener('DOMContentLoaded', loadCart);
+</script>
+<script>
+    window.CART_PAGE = true;
 </script>
 
 <!-- Universal app logic (cart, auth, search, etc.) -->
