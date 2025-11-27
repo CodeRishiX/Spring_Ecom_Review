@@ -92,6 +92,19 @@ public class Cartcontroller {
 
     // ✅ GET /cart/role
 
+    @PutMapping("/update")
+    public ResponseEntity<?> updateQuantity(
+            @RequestParam Long productId,
+            @RequestParam int quantity,
+            Principal principal) {
+
+        User user = userRepository.findByEmail(principal.getName());
+
+        cartService.updateProductQuantity(user.getId(), productId, quantity);
+
+        return ResponseEntity.ok("Cart updated");
+    }
+
 
  
 }

@@ -1,97 +1,144 @@
-// cart.js
+// ===============================
+// CART.JS — FULLY FIXED + WRAPPED
+// ===============================
 
-function showSnackbar(msg, error = false) {
-    // Replace alert with your preferred snackbar UI later
-    alert(msg);
-}
+(() => {
 
-function renderCart(items) {
-    const cartItemsDiv = document.getElementById("cart-items");
-    const countSpan = document.getElementById("cart-count");
-    const totalPrice = document.getElementById("total-price");
-    const grandTotal = document.getElementById("grand-total");
+    // Prevent conflicts with app.js
+    window.CART_PAGE = true;
 
-    cartItemsDiv.innerHTML = ""; // Clear previous table rows
-    countSpan.innerText = items.length;
+    const API_BASE = window.location.origin + "/api";
 
-    let total = 0;
+    document.addEventListener("DOMContentLoaded", loadCart);
 
-    if (items.length === 0) {
-        cartItemsDiv.innerHTML = `
-            <tr>
-                <td colspan="6" class="text-center">Your cart is empty.</td>
-            </tr>
-        `;
-    } else {
-        items.forEach(item => {
-            const itemTotal = item.product.price * item.quantity;
-            total += itemTotal;
-
-            cartItemsDiv.innerHTML += `
-                <tr>
-                    <td class="product-thumbnail">
-                        <img src="http://localhost:8080/api/product/${item.product.id}/image"
-                             alt="${item.product.name}" class="img-fluid">
-                    </td>
-                    <td class="product-name">
-                        <h2 class="h5 text-black">${item.product.name}</h2>
-                    </td>
-                    <td>$${item.product.price.toFixed(2)}</td>
-                    <td>${item.quantity}</td>
-                    <td>$${itemTotal.toFixed(2)}</td>
-                    <td>
-                        <button class="btn btn-black btn-sm" onclick="removeItem(${item.product.id})">X</button>
-                    </td>
-                </tr>
-            `;
-        });
+    function showSnackbar(msg, error = false) {
+        alert(msg);
     }
 
-    totalPrice.innerText = `$${total.toFixed(2)}`;
-    grandTotal.innerText = `$${total.toFixed(2)}`;
-}
+    async function loadCart() {
+        const cartItemsDiv = document.getElementById("cart-items");
+        const emptyState = document.getElementById("cart-empty");
+        const checkoutWrapper = document.getElementById("checkout-box-wrapper");
+        const totalDisplay = document.getElementById("grand-total");
 
-function loadCart() {
-    fetch("http://localhost:8080/api/cart", { credentials: 'include' })
-        .then(res => {
-            if (!res.ok) throw new Error('Could not fetch cart');
-            return res.json();
-        })
-        .then(items => {
-            renderCart(items);
-        })
-        .catch(error => {
-            console.error("Error fetching cart:", error);
-            showSnackbar("Failed to load cart items. Please try again.", true);
-        });
-}
+        cartItemsDiv.innerHTML = "";
 
-function removeItem(productId) {
-    if (!confirm('Are you sure you want to remove this item from your cart?')) {
-        return;
-    }
-    fetch(`http://localhost:8080/api/cart/remove/${productId}`, {
-        method: "DELETE",
-        credentials: "include",
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+        try {
+            const res = await fetch(`${API_BASE}/cart`, { credentials: 'include' });
+            if (!res.ok) throw new Error("Could not fetch cart");
+
+            const items = await res.json();
+
+            if (!items || items.length === 0) {
+                emptyState.classList.remove("d-none");
+                checkoutWrapper.classList.add("d-none");
+                updateCartBadge(0);
+                return;
+            }
+
+            emptyState.classList.add("d-none");
+            checkoutWrapper.classList.remove("d-none");
+
+            let total = 0;
+
+            items.forEach(item => {
+                const subtotal = item.product.price * item.quantity;
+                total += subtotal;
+
+                const col = document.createElement("div");
+                col.className = "cart-card mb-3";
+
+                col.innerHTML = `
+                    <img src="${API_BASE}/product/${item.product.id}/image"
+                         class="cart-item-img"
+                         alt="${item.product.name}"
+                         onerror="this.src='https://dummyimage.com/450x300/dee2e6/6c757d.jpg'">
+
+                    <div class="flex-grow-1">
+                        <h5 class="fw-semibold mb-1">${item.product.name}</h5>
+
+                        <div class="qty-box">
+                            <button class="qty-minus" data-id="${item.product.id}" data-qty="${item.quantity}">−</button>
+                            <input readonly value="${item.quantity}">
+                            <button class="qty-plus" data-id="${item.product.id}" data-qty="${item.quantity}">+</button>
+                        </div>
+                    </div>
+
+                    <div class="fw-bold fs-5 text-primary">$${subtotal.toFixed(2)}</div>
+
+                    <button class="btn btn-sm btn-outline-danger remove-btn"
+                            data-id="${item.product.id}">
+                        Remove
+                    </button>
+                `;
+
+                cartItemsDiv.appendChild(col);
+            });
+
+            totalDisplay.textContent = `$${total.toFixed(2)}`;
+            updateCartBadge(items.length);
+
+            attachButtonActions();
+
+        } catch (err) {
+            console.error(err);
+            cartItemsDiv.innerHTML = `<p class="text-center text-danger">Failed to load cart.</p>`;
         }
-    })
-        .then(response => {
-            if (!response.ok)
-                return response.text().then(text => { throw new Error(text || 'Failed to remove item from cart'); });
-            return response.text();
-        })
-        .then(() => {
-            showSnackbar('✅ Item removed successfully');
-            setTimeout(() => loadCart(), 500); // Reload cart quickly after deletion
-        })
-        .catch(error => {
-            console.error("Error:", error);
-            showSnackbar(`❌ ${error.message}`, true);
-        });
-}
+    }
 
-// Load the cart after DOM is ready
-document.addEventListener("DOMContentLoaded", loadCart);
+    // Attach event listeners AFTER rendering
+    function attachButtonActions() {
+
+        document.querySelectorAll(".qty-minus").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const id = btn.getAttribute("data-id");
+                const qty = parseInt(btn.getAttribute("data-qty"));
+                updateQty(id, qty - 1);
+            });
+        });
+
+        document.querySelectorAll(".qty-plus").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const id = btn.getAttribute("data-id");
+                const qty = parseInt(btn.getAttribute("data-qty"));
+                updateQty(id, qty + 1);
+            });
+        });
+
+        document.querySelectorAll(".remove-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const id = btn.getAttribute("data-id");
+                removeItem(id);
+            });
+        });
+    }
+
+    async function updateQty(productId, newQty) {
+        if (newQty < 1) return;
+
+        await fetch(`${API_BASE}/cart/update?productId=${productId}&quantity=${newQty}`, {
+            method: "PUT",
+            credentials: "include"
+        });
+
+        loadCart();
+    }
+
+    async function removeItem(productId) {
+        if (!confirm("Remove this item?")) return;
+
+        await fetch(`${API_BASE}/cart/remove/${productId}`, {
+            method: "DELETE",
+            credentials: "include"
+        });
+
+        loadCart();
+    }
+
+    function updateCartBadge(count) {
+        const badge = document.getElementById("cart-badge");
+        if (badge) badge.textContent = count;
+    }
+
+})();
+v

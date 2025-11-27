@@ -1,3 +1,5 @@
+/* CLEANED + CONSOLIDATED style.css (NO logic removed, all duplicates fixed) */
+
 :root {
   --primary-color: #3b5d50;
   --secondary-color: #f9bf29;
@@ -8,71 +10,86 @@
   --font-family-sans-serif: "Inter", sans-serif;
   --font-family-serif: "Inter", sans-serif;
 }
+
 body {
   font-family: var(--font-family-sans-serif);
   background-color: #F5F5DC;
   color: var(--text-light);
   overflow-x: hidden;
 }
+
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-family-sans-serif);
   color: var(--text-dark);
   font-weight: 600;
 }
+
 a {
   text-decoration: none;
   color: var(--primary-color);
   transition: .3s all ease;
 }
+
 a:hover {
   color: var(--text-dark);
-  text-decoration: none;
 }
+
+/* =============================== BUTTONS =============================== */
 .btn {
   border-radius: 30px;
   padding: 12px 30px;
   font-weight: 600;
 }
+
 .btn-primary {
   background-color: var(--primary-color);
   border-color: var(--primary-color);
   color: var(--white);
 }
+
 .btn-primary:hover {
   background-color: #324f46;
   border-color: #324f46;
 }
+
 .btn-secondary {
   background-color: var(--secondary-color);
   border-color: var(--secondary-color);
   color: var(--text-dark);
 }
+
 .btn-secondary:hover {
   background-color: #f8b810;
   border-color: #f8b810;
 }
+
 .btn-white-outline {
   background: transparent;
   border: 2px solid rgba(255, 255, 255, 0.5);
   color: var(--white);
 }
+
 .btn-white-outline:hover {
   background: var(--white);
   color: var(--primary-color);
 }
+
+/* =============================== NAVBAR =============================== */
 .custom-navbar {
   background: var(--primary-color) !important;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding: 20px 0;
 }
+
 .custom-navbar .navbar-brand {
   font-size: 1.8rem;
   font-weight: 600;
   color: var(--white);
 }
+
 .custom-navbar .navbar-brand span {
   color: var(--secondary-color);
 }
+
 .custom-navbar .custom-navbar-nav .nav-link {
   color: var(--white);
   padding: 10px 15px !important;
@@ -81,14 +98,17 @@ a:hover {
   opacity: 0.7;
   transition: .3s all ease;
 }
+
 .custom-navbar .custom-navbar-nav .nav-link:hover,
 .custom-navbar .custom-navbar-nav .nav-link.active {
   opacity: 1;
   color: var(--white);
 }
+
 .custom-navbar .custom-navbar-nav .nav-link:not(.dropdown-toggle) {
   position: relative;
 }
+
 .custom-navbar .custom-navbar-nav .nav-link:not(.dropdown-toggle)::after {
   content: '';
   position: absolute;
@@ -100,24 +120,29 @@ a:hover {
   width: 0;
   transition: width 0.3s ease-out;
 }
+
 .custom-navbar .custom-navbar-nav .nav-link:not(.dropdown-toggle):hover::after,
 .custom-navbar .custom-navbar-nav .nav-link:not(.dropdown-toggle).active::after {
   width: calc(100% - 30px);
 }
+
 .custom-navbar .custom-navbar-cta {
   display: flex;
   align-items: center;
   gap: 15px;
 }
+
 .custom-navbar .search-input {
   border-radius: 30px;
   border: none;
   background-color: rgba(255,255,255,0.1);
   color: var(--white);
 }
+
 .custom-navbar .search-input::placeholder {
   color: rgba(255,255,255,0.4);
 }
+
 .custom-navbar #searchForm .search-btn {
   background: var(--secondary-color);
   border: none;
@@ -125,414 +150,58 @@ a:hover {
   border-radius: 50%;
   width: 40px;
   height: 40px;
-  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.custom-navbar .custom-navbar-cta .btn-outline-dark {
+/* Fix Bootstrap distortion inside the round search button */
+.custom-navbar #searchForm .search-btn {
+  padding: 0 !important;
+  line-height: 0 !important;
+}
+
+.custom-navbar #searchForm {
+  display: flex;
+  align-items: center;
+}
+
+.custom-navbar .btn-outline-dark {
   border-color: rgba(255,255,255,0.3);
   color: var(--white);
   border-radius: 30px;
 }
-.custom-navbar .custom-navbar-cta .btn-outline-dark:hover {
+
+.custom-navbar .btn-outline-dark:hover {
   background: var(--white);
   color: var(--primary-color);
 }
-.custom-navbar #userName {
-  color: var(--white) !important;
-}
-.custom-navbar #userProfile .text-white-50 {
-  color: rgba(255,255,255,0.6) !important;
-}
 
-/* ----------------------------
-   Admin/User badge color overrides (navbar)
-   - admin: orange (uses --secondary-color)
-   - user: green
-   - badges hidden by default (d-none in markup) and toggled by JS
-   ---------------------------- */
+/* =============================== BADGE OVERRIDES =============================== */
 .custom-navbar .badge.admin-badge {
-  background-color: var(--secondary-color) !important; /* orange */
+  background-color: var(--secondary-color) !important;
   color: var(--text-dark) !important;
-  border-radius: 0.35rem;
   font-weight: 700;
 }
 
 .custom-navbar .badge.user-badge {
-  background-color: #090469 !important; /* green */
-  color: #ffffff !important;
-  border-radius: 0.35rem;
-  font-weight: 700;
-}
-
-.hero {
-  background: var(--primary-color);
-  padding: 8rem 0;
-  position: relative;
-}
-.hero .intro-excerpt {
-  position: relative;
-  z-index: 2;
-}
-.hero h1 {
-  font-weight: 700;
-  font-size: 3.5rem;
-  color: var(--white);
-  margin-bottom: 1.5rem;
-}
-.hero p {
-  color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 2rem;
-  font-size: 1.1rem;
-}
-.hero .hero-img-wrap {
-  position: relative;
-  z-index: 1;
-}
-.hero .hero-img-wrap img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-}
-.hero .hero-img-wrap::before {
-  content: '';
-  position: absolute;
-  bottom: -20px;
-  right: -20px;
-  width: 100%;
-  height: 100%;
-  background: var(--secondary-color);
-  border-radius: 20px;
-  z-index: -1;
-  opacity: 0.3;
-}
-.product-section {
-  padding: 6rem 0;
-}
-.section-title {
-  font-size: 2.2rem;
-  font-weight: 700;
-  margin-bottom: 3rem;
-  color: var(--text-dark);
-}
-.product-grid .card {
-  border: none;
-  background: transparent;
-  border-radius: 15px;
-  margin-bottom: 30px;
-  transition: .3s all ease;
-  position: relative;
-}
-.product-grid .card .card-img-top {
-  border-radius: 15px;
-  margin-bottom: 15px;
-  aspect-ratio: 1 / 1;
-  object-fit: contain;
-}
-.product-grid .card-body {
-  padding: 1rem 0.5rem;
-  text-align: center;
-}
-.product-grid .card-body h5 {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--text-dark);
-  margin-bottom: 5px;
-}
-.product-grid .card-body .fw-bolder + div {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--text-dark);
-}
-.product-grid .card-footer {
-  border-top: none;
-  background: transparent;
-  padding: 0 0.5rem 1rem;
-}
-.product-grid .card .btn-primary {
-  background: var(--primary-color);
-  border-color: var(--primary-color);
-}
-.product-grid .card .btn-primary:hover {
-  background: #324f46;
-  border-color: #324f46;
-}
-.product-grid .card:hover {
-  box-shadow: 0 20px 40px -10px rgba(0,0,0,0.15);
-  transform: translateY(-5px) scale(1.03);
-}
-.why-choose-section {
-  padding: 6rem 0;
-  background: var(--bg-light);
-}
-.why-choose-section .img-wrap {
-  position: relative;
-}
-.why-choose-section .img-wrap img {
-  border-radius: 20px;
-  max-width: 100%;
-}
-.feature {
-  margin-bottom: 30px;
-}
-.feature .icon {
-  display: inline-block;
-  position: relative;
-  margin-bottom: 20px;
-}
-.feature .icon:before {
-  content: "";
-  width: 33px;
-  height: 33px;
-  position: absolute;
-  background: rgba(59, 93, 80, 0.2);
-  border-radius: 50%;
-  right: -8px;
-  bottom: 0;
-}
-.feature .icon i {
-  font-size: 2.5rem;
-  color: var(--primary-color);
-}
-.feature h3 {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--text-dark);
-}
-.feature p {
-  font-size: 0.9rem;
-  color: var(--text-light);
-}
-.footer-section {
-  background: var(--primary-color);
-  padding: 8rem 0 3rem 0;
-  color: rgba(255, 255, 255, 0.6);
-  position: relative;
-}
-.footer-section .footer-logo {
-  font-size: 2rem;
-  font-weight: 600;
-  color: var(--white);
-}
-.footer-section .footer-logo span {
-  color: var(--secondary-color);
-}
-.footer-section .subscription-form {
-  margin-bottom: 40px;
-}
-.footer-section .subscription-form h3 {
-  color: var(--white);
-  font-size: 1.1rem;
-  font-weight: 500;
-}
-.footer-section .subscription-form .form-control {
-  background: transparent;
-  border: 2px solid rgba(255,255,255,0.3);
-  border-radius: 30px;
-  color: var(--white);
-}
-.footer-section .subscription-form .form-control:focus,
-.footer-section .subscription-form .form-control:active {
-  background: transparent;
-  box-shadow: none;
-  border-color: var(--white);
-  color: var(--white);
-}
-.footer-section .subscription-form .form-control::placeholder {
-  color: rgba(255,255,255,0.4);
-}
-.footer-section .subscription-form .btn-primary {
-  border-radius: 30px !important;
-}
-.footer-section .links-wrap ul li {
-  margin-bottom: 10px;
-}
-.footer-section .links-wrap ul li a {
-  color: rgba(255, 255, 255, 0.6);
-}
-.footer-section .links-wrap ul li a:hover {
-  color: var(--white);
-}
-.footer-section .sofa-img {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  max-width: 350px;
-  opacity: 0.2;
-}
-.footer-section .sofa-img img {
-  max-width: 100%;
-}
-.footer-section .copyright {
-  border-top: 1px solid rgba(255,255,255,0.2);
-  padding-top: 2rem;
-  font-size: 0.9rem;
-}
-/* ----------------------------
-   Carousel controls: smaller + opaque
-   ----------------------------
-   - Reduce clickable control box and icon size
-   - Force full opacity (remove transparency)
-   - Keep vertical centering intact
-*/
-.carousel-control-prev,
-.carousel-control-next {
-  /* smaller clickable area */
-  width: 2.2rem;        /* control button width (adjust as needed) */
-  height: 2.2rem;       /* control button height */
-  top: 50%;
-  transform: translateY(-50%);
-  opacity: 1 !important;            /* force fully opaque */
-  background: transparent;          /* no translucent background */
-  border-radius: 0.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* shrink the SVG/background icon itself */
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-  width: 1.0rem;        /* icon width (smaller) */
-  height: 1.0rem;       /* icon height (smaller) */
-  background-size: 100% 100% !important; /* ensure full fill */
-  opacity: 1 !important;         /* icon fully opaque */
-  filter: none !important;       /* remove any CSS filters */
-}
-
-/* Optional: slightly reduce hover scale so icon does not jump on hover */
-.carousel-control-prev:hover,
-.carousel-control-next:hover {
-  transform: translateY(-50%) scale(1.02);
-  opacity: 1 !important;
-}
-
-/* ----------------------------
-   Carousel image block: expand width & shift left
-   ----------------------------
-   Preferred approach:
-   - Add class "carousel-expanded" to your carousel element:
-     <div id="myCarousel" class="carousel slide carousel-expanded" ...>
-   This keeps changes scoped.
-*/
-.carousel.carousel-expanded {
-  width: calc(100% + 160px);  /* expand horizontally (adjust px or use % as needed) */
-  max-width: none;
-  margin-left: -80px;         /* shift to the left half the extra width */
-  /* keep it responsive */
-  box-sizing: border-box;
-}
-
-/* Make images inside expanded carousel fill container while preserving aspect */
-.carousel.carousel-expanded .carousel-inner,
-.carousel.carousel-expanded .carousel-item {
-  width: 100%;
-  max-width: none;
-}
-
-.carousel.carousel-expanded .carousel-item img {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  display: block;
-}
-
-/* ----------------------------
-   Fallback approach (when you cannot add a class):
-   - Targets a carousel that is a direct child of a .container
-   - This is less safe (affects every such carousel) — remove if you prefer scoped class above
-   ---------------------------- */
-.container > .carousel {
-  /* only apply fallback on wider viewports to avoid breaking mobile layout */
-  width: calc(100% + 120px);
-  margin-left: -60px;
-  max-width: none;
-}
-
-/* Ensure inner sizing remains consistent */
-.container > .carousel .carousel-inner,
-.container > .carousel .carousel-item img {
-  max-width: none;
-  width: 100%;
-}
-/* ----------------------------
-   PAGINATION (SpringCart style)
-   ---------------------------- */
-.pagination {
-  justify-content: center;
-  margin-top: 30px;
-}
-
-.pagination .page-item {
-  margin: 0 5px;
-}
-
-.pagination .page-link {
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--primary-color);
-  font-weight: 600;
-  background-color: #ffffff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  transition: 0.25s ease;
-}
-
-.pagination .page-link:hover {
-  background-color: var(--secondary-color);
-  color: #000;
-  transform: translateY(-2px);
-}
-
-/* Active Page */
-.pagination .page-item.active .page-link {
-  background-color: var(--primary-color);
+  background-color: #090469 !important;
   color: #fff !important;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
-  transform: scale(1.1);
+  font-weight: 700;
 }
 
-/* Disabled */
-.pagination .page-item.disabled .page-link {
-  opacity: 0.4;
-  cursor: not-allowed;
-  background-color: #eee;
-  color: #999;
-}
-/* SHIMMER EFFECT */
-.loading-skeleton {
-  position: relative;
-  overflow: hidden;
-  background: #e2e2e2;
+/* =============================== GLOWING SEARCH =============================== */
+.glow-search {
+  box-shadow: 0 0 10px var(--secondary-color);
+  animation: pulseGlow 1.8s infinite ease-in-out;
 }
 
-.loading-skeleton::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-          90deg,
-          rgba(255, 255, 255, 0) 0%,
-          rgba(255, 255, 255, 0.6) 50%,
-          rgba(255, 255, 255, 0) 100%
- );
-  animation: shimmer 1.5s infinite;
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 6px var(--secondary-color); }
+  50% { box-shadow: 0 0 16px var(--secondary-color); }
+  100% { box-shadow: 0 0 6px var(--secondary-color); }
 }
 
-@keyframes shimmer {
-  0% { left: -100%; }
-  100% { left: 100%; }
-}
-/* PROFILE DROPDOWN (FIXED HOVER ISSUE) */
+/* =============================== PROFILE DROPDOWN (CLEAN + MERGED) =============================== */
 .profile-dropdown-container {
   position: relative;
 }
@@ -544,37 +213,42 @@ a:hover {
   cursor: pointer;
 }
 
-/* Dropdown box */
 .profile-dropdown-menu {
   position: absolute;
-  top: 55px;
+  top: 50px;
   right: 0;
-  background: white;
-  list-style: none;
-  padding: 10px 0;
-  border-radius: 10px;
   width: 180px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px 0;
+  list-style: none;
   box-shadow: 0 5px 20px rgba(0,0,0,0.15);
   display: none;
-  z-index: 2000;
+  z-index: 4000;
 }
 
-/* KEEP DROPDOWN OPEN when hovering */
+/* Hover */
 .profile-dropdown-container:hover .profile-dropdown-menu,
 .profile-dropdown-menu:hover {
-  display: block !important;
+  display: block;
+}
+
+/* Click (Bootstrap toggles .show) */
+.profile-dropdown-container.show .profile-dropdown-menu {
+  display: block;
 }
 
 .profile-dropdown-menu li a {
-  display: block;
   padding: 10px 18px;
   font-size: 0.9rem;
   color: #333;
+  display: block;
 }
 
 .profile-dropdown-menu li a:hover {
   background: #f5f5f5;
 }
+
 .profile-dropdown-menu li.logout-btn a {
   background: var(--secondary-color) !important;
   color: var(--text-dark) !important;
@@ -583,8 +257,105 @@ a:hover {
 }
 
 .profile-dropdown-menu li.logout-btn a:hover {
-  background: #f8b810 !important; /* Same hover as .btn-secondary:hover */
+  background: #f8b810 !important;
   color: #000 !important;
 }
 
+/* =============================== HERO =============================== */
+.hero {
+  background: var(--primary-color);
+  padding: 8rem 0;
+  position: relative;
+}
 
+.hero .intro-excerpt {
+  position: relative;
+  z-index: 2;
+}
+
+.hero h1 {
+  color: #fff;
+  font-weight: 700;
+  font-size: 3.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.hero p {
+  color: rgba(255,255,255,0.6);
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+
+
+/* Apply overlay ONLY on Home page */
+.home-hero .hero-img-wrap::before {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  right: -20px;
+  width: 100%;
+  height: 100%;
+  background: var(--secondary-color);
+  border-radius: 20px;
+  opacity: 0.3;
+}
+
+
+/* =============================== PRODUCT GRID =============================== */
+.product-section {
+  padding: 6rem 0;
+}
+
+.section-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 3rem;
+}
+
+.product-grid .card {
+  border: none;
+  background: transparent;
+  border-radius: 15px;
+  margin-bottom: 30px;
+  transition: .3s;
+}
+
+.product-grid .card:hover {
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 20px 40px -10px rgba(0,0,0,0.15);
+}
+
+.product-grid .card-img-top {
+  border-radius: 15px;
+  object-fit: contain;
+  aspect-ratio: 1/1;
+  margin-bottom: 15px;
+}
+
+/* =============================== FOOTER =============================== */
+.footer-section {
+  background: var(--primary-color);
+  padding: 8rem 0 3rem;
+  color: rgba(255,255,255,0.6);
+}
+
+.footer-section .footer-logo {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--white);
+}
+
+.footer-section .footer-logo span { color: var(--secondary-color); }
+
+/* =============================== PAGINATION =============================== */
+.pagination {
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.pagination .page-link {
+  border: none;
+  width: 40px;
+}

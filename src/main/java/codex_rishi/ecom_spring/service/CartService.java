@@ -26,6 +26,8 @@ public class CartService {
     @Autowired
     private UserRepository userRepository;
 
+
+
     public void addToCart(User user, Product product, int quantity) {
 
         if (user == null || product == null) {
@@ -53,8 +55,7 @@ public class CartService {
             cartItem.setQuantity(newQty);
             cartItem.setAddedAt(java.time.LocalDateTime.now());
             cartItemRepository.save(cartItem);
-        }
-        else {
+        } else {
             CartItem cartItem = new CartItem();
             cartItem.setUser(user);
             cartItem.setProduct(product);
@@ -72,4 +73,14 @@ public class CartService {
     public void removeFromCart(Long userId, Long productId) {
         cartItemRepository.deleteByProduct_IdAndUser_Id(productId, userId);
     }
+
+
+    public void updateProductQuantity(Long userId, Long productId, int quantity) {
+
+        CartItem item = cartItemRepository
+                .findByProduct_IdAndUser_Id(productId, userId);
+        item.setQuantity(quantity);
+        cartItemRepository.save(item);
+    }
+
 }
