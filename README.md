@@ -1,64 +1,125 @@
-# SpringCart - E-commerce Application
+# 🛒 SpringCart – Full-Stack E-Commerce Web Application  
+### Built with Spring Boot, Razorpay, Google OAuth2, Thymeleaf & MySQL
 
-## Overview
-SpringCart is a modern e-commerce web application built with Spring Boot, featuring product management, user authentication via Google OAuth, and a responsive frontend. Deployed on Render, it includes Swagger for API documentation and integrates with a MySQL database hosted on `https://aiven.io/`.
+SpringCart is a fully functional **production-grade e-commerce application** featuring a modern UI, complete shopping flow, admin product management, secure Google OAuth login, Razorpay payment gateway, order history with PDF invoices, and a clean backend architecture.  
+The project is deployed live on Render and uses MySQL hosted on Aiven.
 
-## Features
-- **Product Management**: View, add, update, and delete products with admin controls.
-- **User Authentication**: Secure login with Google OAuth.
-- **Shopping Cart**: Basic cart functionality.
-- **Responsive Design**: Mobile-friendly UI with Bootstrap.
-- **API Documentation**: Swagger UI for exploring endpoints.
-- **Deployment**: Live at `https://springcart.onrender.com`.
+---
 
-## Technologies
-- **Backend**: Spring Boot, Hibernate, JPA
-- **Database**: MySQL
-- **Frontend**: HTML, CSS, JavaScript, Bootstrap
-- **Authentication**: Spring Security with Google OAuth
-- **Documentation**: Swagger
-- **Hosting**: Render
+## 🚀 Live Demo  
+🔗 **https://springcart.onrender.com**
 
-## Prerequisites
-- Java 21
-- Maven
-- MySQL
-- Git
-- Google Cloud Console (for OAuth setup)
+---
 
-## Installation
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Debangshu6/Ecommerce.git
-   cd Ecommerce
-   ```
-2. Configure `application.properties`:
-   - Update `spring.datasource.url`, `spring.datasource.username`, and `spring.datasource.password` with your MySQL credentials.
-   - Set `spring.security.oauth2.client.registration.google.client-id` and `spring.security.oauth2.client.registration.google.client-secret` from Google Cloud Console.
-3. Build the project:
-   ```bash
-   mvn clean install
-   ```
-4. Run locally:
-   ```bash
-   mvn spring-boot:run
-   ```
+## 📌 Overview  
+SpringCart provides a smooth shopping experience like a real e-commerce platform (Flipkart/Amazon–style) including:
 
-## Deployment
-- Deployed on Render: `https://springcart.onrender.com`
-- Environment variables set in Render dashboard (e.g., `SPRING_DATASOURCE_URL`, `GOOGLE_CLIENT_ID`).
-- Redeploy via GitHub push or manual deploy on Render.
+- Product browsing  
+- Add to cart  
+- Checkout summary  
+- Razorpay payment  
+- Order tracking  
+- Invoice downloads  
+- Admin product management  
+- Google OAuth authentication  
+- Clean UI with responsive design  
 
-## API Documentation
-- Access Swagger UI at `https://springcart.onrender.com/swagger-ui.html` (post-deployment).
-- Endpoints include `/api/products`, `/api/auth/status`, `/api/cart`, etc.
+---
 
-## Usage
-- Browse products at the homepage.
-- Sign in with Google to access admin features (e.g., add/update products).
-- Use the search bar to filter products.
+## 🎯 Key Features
 
+### 👤 **User Features**
+- Login using **Google OAuth 2.0**
+- View all products with clean product cards  
+- Product Details page  
+- Add to Cart with live cart count update  
+- Checkout page displaying:
+  - Product price  
+  - Delivery charge  
+  - Discounts  
+  - Payable total  
+- **Razorpay Payment Gateway (Test Mode)**  
+- Automatic order creation on successful payment  
+- Payment success & failure redirection  
+- View all previous orders under **My Orders**  
+- **Order Details** page showing:
+  - Order ID  
+  - Product details  
+  - Amount  
+  - Timestamps  
+  - Payment status  
+- **Download Invoice (PDF)** for each order  
 
-## Contact
-- Email: debangshubhattacharya4@gmail.com
+---
+
+### 🛠️ **Admin Features**
+Admin is detected using the admin email inside **CustomAuthSuccessHandler**.
+
+- Google OAuth2 login → auto redirect to admin panel  
+- Add product (with validations)  
+- Edit product (form auto-fills current values)  
+- Delete product  
+- Product image upload:
+  - JPG only  
+  - Max 5MB  
+  - URL or file upload  
+- Admin UI automatically hides:
+  - Add to cart  
+  - Buy buttons  
+
+⚠ **Admin cannot order or add to cart.**
+
+---
+
+## 💳 Payment Integration (Razorpay)
+
+- Integrated Razorpay checkout UI (Test Mode)  
+- Backend validates signature & payment  
+- **Success Flow**:
+  - Save order to DB  
+  - Clear cart  
+  - Redirect to success page  
+- **Failure Flow**:
+  - Keep cart unchanged  
+  - Redirect to failure page  
+
+---
+
+## 📄 Invoice Generation  
+Each successful order generates a **PDF invoice**, containing:
+
+- Order ID  
+- Product details  
+- Payment status  
+- Total amount  
+- Order timestamp  
+
+---
+
+## 🔧 Technologies Used
+
+### **Backend**
+- Spring Boot 3  
+- Spring MVC  
+- Spring Security (OAuth2 Login)  
+- Spring Data JPA  
+- Hibernate  
+- Razorpay Java SDK  
+
+### **Frontend**
+- HTML5  
+- CSS3  
+- JavaScript  
+- Thymeleaf  
+- Bootstrap  
+
+### **Database**
+- **MySQL (Hosted on Aiven Cloud)**  
+
+### **Deployment**
+- Render (Web Service)
+
+---
+
+## 📁 Project Structure
 
