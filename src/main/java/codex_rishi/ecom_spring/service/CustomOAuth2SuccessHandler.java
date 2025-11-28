@@ -31,9 +31,9 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private EmailService emailService;
+//
+//    @Autowired
+//    private EmailService emailService;
 
     private final Set<String> adminEmails = Set.of(
             "debangshubhattacharya4@gmail.com"
@@ -85,7 +85,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
         if (isNewUser) {
             logger.info(">>>>> ATTEMPTING TO SEND WELCOME EMAIL to: {}", email);
             try {
-                emailService.sendWelcomeEmail(email, name);
+//                emailService.sendWelcomeEmail(email, name);
                 logger.info(">>>>> ✅ WELCOME EMAIL SENT SUCCESSFULLY to: {}", email);
             } catch (Exception e) {
                 logger.error(">>>>> ❌ FAILED TO SEND WELCOME EMAIL to: {}", email, e);

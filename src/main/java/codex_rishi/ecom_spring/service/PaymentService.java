@@ -39,8 +39,6 @@ public class PaymentService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private EmailService emailService;
 
     @Value("${razorpay.secret}")
     private String razorpaySecret;
@@ -156,12 +154,12 @@ public class PaymentService {
                 order.setStatus(OrderStatus.FAILED);
                 orderRepository.save(order);
 
-                emailService.sendOrderFailureEmail(
-                        order.getUser().getEmail(),
-                        order.getUser().getName(),
-                        order.getId().toString(),
-                        "Invalid payment signature"
-                );
+//                emailService.sendOrderFailureEmail(
+//                        order.getUser().getEmail(),
+//                        order.getUser().getName(),
+//                        order.getId().toString(),
+//                        "Invalid payment signature"
+//                );
 
                 resp.put("status", "failed");
                 resp.put("message", "Invalid signature");
@@ -175,12 +173,12 @@ public class PaymentService {
             order.setPaymentId(razorpayPaymentId);
             orderRepository.save(order);
 
-            emailService.sendOrderSuccessEmail(
-                    order.getUser().getEmail(),
-                    order.getUser().getName(),
-                    order.getId().toString(),
-                    order.getTotalAmount()
-            );
+//            emailService.sendOrderSuccessEmail(
+//                    order.getUser().getEmail(),
+//                    order.getUser().getName(),
+//                    order.getId().toString(),
+//                    order.getTotalAmount()
+//            );
 
             Long userId = order.getUser().getId();
             List<CartItem> cartItems = cartItemRepository.findAllByUser_Id(userId);
