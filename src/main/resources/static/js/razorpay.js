@@ -15,6 +15,7 @@ document.getElementById("btn-proceed").addEventListener("click", async () => {
         const res = await fetch("/api/payment/create-order", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
+            credentials: "include",   // 🔥 REQUIRED FOR RENDER
             body: JSON.stringify({ userId })
         });
 
@@ -55,6 +56,7 @@ document.getElementById("btn-proceed").addEventListener("click", async () => {
                 const verifyResp = await fetch("/api/payment/verify", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
+                    credentials: "include",   // 🔥 REQUIRED FOR RENDER
                     body: JSON.stringify({
                         razorpay_payment_id: response.razorpay_payment_id,
                         razorpay_order_id: response.razorpay_order_id,
@@ -73,9 +75,6 @@ document.getElementById("btn-proceed").addEventListener("click", async () => {
                 }
             },
 
-            // -------------------------------------
-            // ⭐ USER CLOSED PAYMENT POPUP
-            // -------------------------------------
             modal: {
                 ondismiss: async () => {
                     console.log("Payment popup closed");
@@ -84,18 +83,13 @@ document.getElementById("btn-proceed").addEventListener("click", async () => {
             }
         };
 
-        // Razorpay instance
         const razorpay = new Razorpay(options);
 
-        // -------------------------------------
-        // ⭐ PAYMENT FAILED FROM RAZORPAY
-        // -------------------------------------
         razorpay.on("payment.failed", async (response) => {
             console.log("Payment Failed:", response.error);
             await markPaymentFailed(orderId);
         });
 
-        // open checkout
         razorpay.open();
 
     } catch (err) {
@@ -108,6 +102,10 @@ document.getElementById("btn-proceed").addEventListener("click", async () => {
 // 🔥 Reusable function → Marks Failed in Backend
 // ------------------------------------------------------
 async function markPaymentFailed(orderId) {
-    await fetch(`/api/payment/failed/${orderId}`, { method: "POST" });
+    await fetch(`/api/payment/failed/${orderId}`, {
+        method: "POST",
+        credentials: "include"    // 🔥 REQUIRED FOR RENDER
+    });
+
     window.location.href = "/payment-failed";
 }

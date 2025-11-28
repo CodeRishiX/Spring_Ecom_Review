@@ -3,7 +3,7 @@ package codex_rishi.ecom_spring.controller;
 import codex_rishi.ecom_spring.model.Order;
 import codex_rishi.ecom_spring.model.OrderStatus;
 import codex_rishi.ecom_spring.repository.OrderRepository;
-import codex_rishi.ecom_spring.service.EmailService;
+
 import codex_rishi.ecom_spring.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +19,8 @@ public class PaymentController {
     private PaymentService paymentService;
     @Autowired
     private OrderRepository orderRepository;
-    @Autowired
-    private EmailService emailService;
+//    @Autowired
+//    private EmailService emailService;
 
     /**
      * STEP 1: Create a Razorpay Order + Create INTERNAL ORDER (PENDING)
@@ -51,16 +51,14 @@ public class PaymentController {
         order.setStatus(OrderStatus.FAILED);
         orderRepository.save(order);
 
-        // ⭐ SEND FAILURE EMAIL ⭐
-        emailService.sendOrderFailureEmail(
-                order.getUser().getEmail(),
-                order.getUser().getName(),
-                order.getId().toString(),
-                "Payment was cancelled or failed"
-        );
+//        // ⭐ SEND FAILURE EMAIL ⭐
+//        emailService.sendOrderFailureEmail(
+//                order.getUser().getEmail(),
+//                order.getUser().getName(),
+//                order.getId().toString(),
+//                "Payment was cancelled or failed"
+//        );
 
         return ResponseEntity.ok("Order marked as FAILED");
     }
-
-
 }
